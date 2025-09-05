@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/beneficios.css}">
+    <!-- link Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Navbar con fragment-->
+    <div th:replace="fragments/base :: navbar"></div>
+
+    <!-- Seccion Beneficios -->
+    <section class="benefits-section py-5" id="beneficios">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Beneficios de Nuestros Servicios</h2>
+                <p class="text-muted">Por qué elegir Aviación Agrícola SAC para sus necesidades de fumigación</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card border-0 h-100 text-center p-3">
+                        <div class="card-body">
+                            <i class="fas fa-leaf feature-icon mb-3"></i>
+                            <h4 class="card-title">Sostenibilidad</h4>
+                            <p class="card-text">Utilizamos tecnologías y productos que minimizan el impacto ambiental,
+                                protegiendo el ecosistema mientras cuidamos sus cultivos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 h-100 text-center p-3">
+                        <div class="card-body">
+                            <i class="fas fa-tachometer-alt feature-icon mb-3"></i>
+                            <h4 class="card-title">Eficiencia</h4>
+                            <p class="card-text">Nuestros métodos de fumigación aseguran una cobertura óptima, ahorrando
+                                tiempo y recursos mientras maximizamos los resultados.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 h-100 text-center p-3">
+                        <div class="card-body">
+                            <i class="fas fa-hand-holding-usd feature-icon mb-3"></i>
+                            <h4 class="card-title">Rentabilidad</h4>
+                            <p class="card-text">Incrementamos el rendimiento de sus cultivos al controlar efectivamente
+                                las plagas y enfermedades, mejorando su productividad.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 h-100 text-center p-3">
+                        <div class="card-body">
+                            <i class="fas fa-shield-alt feature-icon mb-3"></i>
+                            <h4 class="card-title">Seguridad</h4>
+                            <p class="card-text">Cumplimos con todos los estándares de seguridad y normativas
+                                ambientales vigentes, garantizando operaciones seguras.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 h-100 text-center p-3">
+                        <div class="card-body">
+                            <i class="fas fa-cogs feature-icon mb-3"></i>
+                            <h4 class="card-title">Tecnología</h4>
+                            <p class="card-text">Contamos con equipos de última generación y personal capacitado para
+                                ofrecer un servicio a la vanguardia del sector.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 h-100 text-center p-3">
+                        <div class="card-body">
+                            <i class="fas fa-headset feature-icon mb-3"></i>
+                            <h4 class="card-title">Atención Personalizada</h4>
+                            <p class="card-text">Adaptamos nuestros servicios a las necesidades específicas de cada
+                                cliente y tipo de cultivo para resultados óptimos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer con fragment -->
+    <div th:replace="fragments/base :: footer"></div>
+
+    <!-- Botón flotante WhatsApp -->
+    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
+        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script th:src="@{/js/beneficios.js}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding-top: 20px;
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('../img/max_banner.png') no-repeat center center/cover;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.company-logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.company-logo i {
+    font-size: 40px;
+    color: #1815dc;
+    margin-bottom: 10px;
+}
+
+.company-logo h2 {
+    font-weight: 700;
+    color: #1815dc;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.2);
+}
+
+.btn-login {
+    background-color: #198754;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    background-color: #146c43;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.form-footer a {
+    color: #1815dc;
+    text-decoration: none;
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    color: #777;
+}
+
+.input-icon input {
+    padding-left: 40px;
+}
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.remember-forgot a {
+    color: #1815dc;
+    text-decoration: none;
+}
+
+.alert {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

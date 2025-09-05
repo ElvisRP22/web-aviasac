@@ -1,0 +1,37 @@
+.benefits-section {
+    background-color: #f8f9fa;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: #28a745;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+}
+
+.btn-whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25d366;
+    color: white;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+    background: #20b954;
+    transform: scale(1.1);
+}
+
+section {
+    scroll-margin-top: 80px;
+}

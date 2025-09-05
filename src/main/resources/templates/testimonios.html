@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/testimonios.css}">
+    <!-- link Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div th:replace="fragments/base :: navbar"></div>
+
+    <!-- Sección Testimonios -->
+    <section class="py-5 bg-light" id="testimonios">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Testimonios de Clientes</h2>
+                <p class="text-muted">Lo que nuestros clientes opinan de nosotros</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card shadow h-100">
+                        <div class="card-body">
+                            <p class="card-text">“Excelente servicio con drone, muy profesionales y rápidos. Mis
+                                cultivos quedaron protegidos en poco tiempo.”</p>
+                            <h5 class="card-title mt-3">Juan Pérez</h5>
+                            <p class="text-muted">Agricultor de arroz</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow h-100">
+                        <div class="card-body">
+                            <p class="card-text">“Con la fumigación en avioneta pude cubrir más de 50 hectáreas en un
+                                solo día. Los recomiendo totalmente.”</p>
+                            <h5 class="card-title mt-3">María López</h5>
+                            <p class="text-muted">Productora de maíz</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow h-100">
+                        <div class="card-body">
+                            <p class="card-text">“Un equipo comprometido y con excelente atención. Se nota que conocen
+                                bien el sector agrícola.”</p>
+                            <h5 class="card-title mt-3">Carlos Gómez</h5>
+                            <p class="text-muted">Cafetícola</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección FAQ -->
+    <section class="py-5" id="faq">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Preguntas Frecuentes</h2>
+                <p class="text-muted">Resolvemos tus dudas más comunes</p>
+            </div>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse1">
+                            ¿Cuántas hectáreas cubre el servicio con drone?
+                        </button>
+                    </h2>
+                    <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Los drones cubren áreas pequeñas e irregulares, generalmente hasta 20 hectáreas por jornada.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse2">
+                            ¿Cuál es el mínimo para fumigación con avioneta?
+                        </button>
+                    </h2>
+                    <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            El servicio con avioneta requiere un mínimo de 10 hectáreas para garantizar la eficiencia
+                            del vuelo.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse3">
+                            ¿Entregan reportes de aplicación?
+                        </button>
+                    </h2>
+                    <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Sí, entregamos reportes digitales con detalles de hectáreas tratadas, tipo de producto y
+                            recomendaciones técnicas.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div th:replace="fragments/base :: footer"></div>
+
+    <!-- Botón flotante WhatsApp -->
+    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
+        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script th:src="@{/js/testimonios.js}"></script>
+
+</body>
+
+</html>

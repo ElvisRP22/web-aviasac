@@ -1,7 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('descargarFolleto').addEventListener('click', function () {
-        window.open('/Assets/documentos/Avance_Proyecto_Final_Marcos.docx', '_blank');
+    // 7. Formulario de contacto
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+        e.preventDefault();
 
+        if (this.checkValidity()) {
+            // Simular envío exitoso
+            alert('¡Mensaje enviado con éxito! Te responderemos a la brevedad.');
+            this.reset();
+        } else {
+            alert('Por favor, complete todos los campos obligatorios.');
+        }
     });
 
     const loginBtn = document.getElementById("nav-login");
@@ -23,23 +31,5 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.removeItem("usuario");
         location.reload(); // refresca la página para volver a mostrar login
     });
-
-    // 13. Suscripción a newsletter
-    document.getElementById('newsletterForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const email = document.getElementById('newsletterEmail').value;
-        if (email && isValidEmail(email)) {
-            alert('¡Gracias por suscribirte a nuestro boletín!');
-            this.reset();
-        } else {
-            alert('Por favor, ingrese un correo electrónico válido.');
-        }
-    });
-
-    function isValidEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
 
 });

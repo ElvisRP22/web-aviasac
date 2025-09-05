@@ -1,0 +1,63 @@
+.about-section {
+    background-color: #e9ecef;
+}
+
+.timeline-container {
+    padding: 50px 0;
+    position: relative;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: #d1d4d7;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+    border-radius: 2px;
+}
+
+.timeline-item {
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.timeline-content {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: 45%;
+}
+
+.timeline-left {
+    left: 0;
+}
+
+.timeline-right {
+    left: 55%;
+}
+
+.timeline-dot {
+    width: 20px;
+    height: 20px;
+    background-color: #d1d4d7;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    margin-left: -10px;
+    z-index: 1;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+}
+
+section {
+    scroll-margin-top: 80px;
+}

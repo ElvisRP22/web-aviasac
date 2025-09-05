@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Aviación Agrícola SAC</title>
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div th:replace="fragments/base :: navbar"></div>
+
+    <!-- Perfil -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body text-center p-5">
+                        <img src="https://thumbs.dreamstime.com/b/l%C3%ADnea-icono-del-negro-avatar-perfil-de-usuario-121102131.jpg"
+                            class="rounded-circle mb-3 border border-3 border-success w-25 h-25" alt="Foto de perfil">
+                            <h3 class="fw-bold">Stephano Benites</h3>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="#" class="btn btn-outline-success" data-bs-toggle="modal"
+                                data-bs-target="#editarPerfilModal">
+                                <i class="fas fa-edit me-2"></i>Editar Perfil
+                            </a>
+                            <a href="/login" class="btn btn-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                            </a>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="text-start">
+                            <h5 class="fw-bold">Información Personal</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-user me-2"></i><strong>Nombre:</strong> Stephano Benites</li>
+                                <li><i class="fas fa-phone me-2"></i><strong>Teléfono:</strong> +51 999 888 777</li>
+                                <li><i class="fas fa-map-marker-alt me-2"></i><strong>Dirección:</strong> Piura, Perú
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="text-start mt-4">
+                            <h5 class="fw-bold">Historial de Actividad</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Último
+                                    inicio de sesión:
+                                    04/09/2025</li>
+                                <li class="list-group-item"><i class="fas fa-file-alt text-primary me-2"></i>Solicitó
+                                    una cotización el
+                                    28/08/2025</li>
+                                <li class="list-group-item"><i class="fas fa-comment text-warning me-2"></i>Dejó un
+                                    testimonio el
+                                    15/08/2025</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <!-- Modal Editar Perfil -->
+    <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="editarPerfilLabel"><i class="fas fa-user-edit me-2"></i>Editar Perfil
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre completo</label>
+                            <input type="text" class="form-control" id="nombre" value="Stephano Benites">
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono" value="+51 999 888 777">
+                        </div>
+                        <div class="mb-3">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccion" value="Piura, Perú">
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="correo" value="usuario@aviasac.com" disabled>
+                            <small class="text-muted">El correo no se puede cambiar</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

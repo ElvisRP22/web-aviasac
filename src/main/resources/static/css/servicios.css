@@ -1,0 +1,71 @@
+.service-card {
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-card .card-img-top {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.service-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.service-card .card-body {
+    padding: 1.5rem;
+}
+
+.service-card ul li {
+    padding: 5px 0;
+}
+
+.gallery-img {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    height: 250px;
+    object-fit: cover;
+}
+
+.gallery-img:hover {
+    transform: scale(1.05);
+}
+
+.btn-whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25d366;
+    color: white;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+    background: #20b954;
+    transform: scale(1.1);
+}
+
+section {
+    scroll-margin-top: 80px;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+}

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/servicios.css}">
+    <!-- link Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div th:replace="fragments/base :: navbar"></div>
+    <!-- Seccion Servicios -->
+    <section class="py-5" id="servicios">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Nuestros Servicios</h2>
+                <p class="text-muted">Ofrecemos soluciones efectivas para el control de plagas y enfermedades en sus
+                    cultivos</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card service-card shadow">
+                        <img th:src="@{/img/dron.jpg}" class="card-img-top"
+                            alt="Fumigación con Drone">
+                        <div class="card-body">
+                            <h3 class="card-title">Fumigación con Drone</h3>
+                            <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en
+                                áreas de difícil acceso o cultivos delicados.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Precisión milimétrica</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Menor impacto ambiental</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Ideal para terrenos irregulares
+                                </li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Monitoreo en tiempo real</li>
+                            </ul>
+                            <button class="btn btn-success mt-3" onclick="showReservationForm('drone')">Solicitar
+                                Cotización</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card service-card shadow">
+                        <img th:src="@{/img/avioneta2.jpg}"
+                            class="card-img-top" alt="Fumigación con Avioneta">
+                        <div class="card-body">
+                            <h3 class="card-title">Fumigación con Avioneta</h3>
+                            <p class="card-text">Cobertura rápida y eficaz para grandes extensiones de terreno, con
+                                resultados probados en todo tipo de cultivos.</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Cobertura de grandes áreas</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Aplicación uniforme</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Rapidez en la aplicación</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Experiencia comprobada</li>
+                            </ul>
+                            <button class="btn btn-success mt-3" onclick="showReservationForm('avioneta')">Solicitar
+                                Cotización</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formularios de Reservación -->
+            <div class="row mt-4">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Formulario para Drone -->
+                    <div id="drone-form" class="reservation-form card shadow p-4">
+                        <h4 class="text-center mb-4">Solicitud de Cotización - Fumigación con Drone</h4>
+                        <form id="droneForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre" class="form-label">Nombre Completo</label>
+                                    <input type="text" class="form-control" id="nombre-drone" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email-drone" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="telefono-drone" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="fecha" class="form-label">Fecha Preferida</label>
+                                    <input type="date" class="form-control" id="fecha-drone" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ubicacion" class="form-label">Ubicación del Terreno</label>
+                                <input type="text" class="form-control" id="ubicacion-drone" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="hectareas" class="form-label">Hectáreas a Fumigar</label>
+                                    <input type="number" class="form-control" id="hectareas-drone" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="tipoCultivo" class="form-label">Tipo de Cultivo</label>
+                                    <select class="form-select" id="tipoCultivo-drone" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="arroz">Arroz</option>
+                                        <option value="maiz">Maíz</option>
+                                        <option value="papa">Papa</option>
+                                        <option value="cafe">Café</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="mensaje" class="form-label">Mensaje Adicional</label>
+                                <textarea class="form-control" id="mensaje-drone" rows="3"></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success me-2">Enviar Solicitud</button>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="hideReservationForm('drone')">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Formulario para Avioneta -->
+                    <div id="avioneta-form" class="reservation-form card shadow p-4">
+                        <h4 class="text-center mb-4">Solicitud de Cotización - Fumigación con Avioneta</h4>
+                        <form id="avionetaForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre" class="form-label">Nombre Completo</label>
+                                    <input type="text" class="form-control" id="nombre-avioneta" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email-avioneta" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="telefono-avioneta" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="fecha" class="form-label">Fecha Preferida</label>
+                                    <input type="date" class="form-control" id="fecha-avioneta" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ubicacion" class="form-label">Ubicación del Terreno</label>
+                                <input type="text" class="form-control" id="ubicacion-avioneta" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="hectareas" class="form-label">Hectáreas a Fumigar</label>
+                                    <input type="number" class="form-control" id="hectareas-avioneta" required min="10">
+                                    <small class="text-muted">Mínimo 10 hectáreas para este servicio</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="tipoCultivo" class="form-label">Tipo de Cultivo</label>
+                                    <select class="form-select" id="tipoCultivo-avioneta" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="arroz">Arroz</option>
+                                        <option value="maiz">Maíz</option>
+                                        <option value="papa">Papa</option>
+                                        <option value="cafe">Café</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="accesibilidad" class="form-label">¿El terreno cuenta con área para
+                                    aterrizaje?</label>
+                                <select class="form-select" id="accesibilidad-avioneta" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="si">Sí</option>
+                                    <option value="no">No</option>
+                                    <option value="no-seguro">No estoy seguro</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="mensaje" class="form-label">Mensaje Adicional</label>
+                                <textarea class="form-control" id="mensaje-avioneta" rows="3"></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success me-2">Enviar Solicitud</button>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="hideReservationForm('avioneta')">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nueva Sección Galería -->
+    <section class="py-5 bg-light" id="galeria">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Galería de Trabajos</h2>
+                <p class="text-muted">Conoce algunos de nuestros trabajos de fumigación aérea</p>
+            </div>
+
+            <div class="row g-3">
+                <div class="card service-card shadow col-md-4">
+                    <img src="/Assets/imagenes/2-DJI-AGRAS-T40-DJI_0453-2-web.jpg" class="card-img-top"
+                        alt="Fumigación con Drone">
+                    <div class="card-body">
+                        <h3 class="card-title">Fumigación con Drone</h3>
+                        <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
+                            de difícil acceso o cultivos delicados.</p>
+                    </div>
+                </div>
+                <div class="card service-card shadow col-md-4">
+                    <img src="/Assets/imagenes/2-DJI-AGRAS-T40-DJI_0453-2-web.jpg" class="card-img-top"
+                        alt="Fumigación con Drone">
+                    <div class="card-body">
+                        <h3 class="card-title">Fumigación con Drone</h3>
+                        <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
+                            de difícil acceso o cultivos delicados.</p>
+                    </div>
+                </div>
+                <div class="card service-card shadow col-md-4">
+                    <img src="/Assets/imagenes/2-DJI-AGRAS-T40-DJI_0453-2-web.jpg" class="card-img-top"
+                        alt="Fumigación con Drone">
+                    <div class="card-body">
+                        <h3 class="card-title">Fumigación con Drone</h3>
+                        <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
+                            de difícil acceso o cultivos delicados.</p>
+                    </div>
+                </div>
+                <div class="card service-card shadow col-md-4">
+                    <img src="/Assets/imagenes/2-DJI-AGRAS-T40-DJI_0453-2-web.jpg" class="card-img-top"
+                        alt="Fumigación con Drone">
+                    <div class="card-body">
+                        <h3 class="card-title">Fumigación con Drone</h3>
+                        <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
+                            de difícil acceso o cultivos delicados.</p>
+                    </div>
+                </div>
+                <div class="card service-card shadow col-md-4">
+                    <img src="/Assets/imagenes/2-DJI-AGRAS-T40-DJI_0453-2-web.jpg" class="card-img-top"
+                        alt="Fumigación con Drone">
+                    <div class="card-body">
+                        <h3 class="card-title">Fumigación con Drone</h3>
+                        <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
+                            de difícil acceso o cultivos delicados.</p>
+                    </div>
+                </div>
+                <div class="card service-card shadow col-md-4">
+                    <img src="/Assets/imagenes/2-DJI-AGRAS-T40-DJI_0453-2-web.jpg" class="card-img-top"
+                        alt="Fumigación con Drone">
+                    <div class="card-body">
+                        <h3 class="card-title">Fumigación con Drone</h3>
+                        <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
+                            de difícil acceso o cultivos delicados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para Galería -->
+    <div class="modal fade" id="galleryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="galleryModalLabel">Galería de Trabajos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="galleryModalImage" src="" alt="" class="img-fluid">
+                    <p id="galleryModalDescription" class="mt-3"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="fragments/base :: footer"></div>
+
+    <!-- Botón flotante WhatsApp -->
+    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
+        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Bootstrap JS (incluye Popper) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+    <script th:src="@{/js/servicios.js}"></script>
+
+</body>
+
+</html>
