@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,53 +10,50 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="login-container">
-            <div class="company-logo">
-                <i class="fas fa-plane"></i>
-                <h2>Aviación Agrícola SAC</h2>
-                <p>Iniciar sesión en tu cuenta</p>
+<div class="container">
+    <div class="login-container">
+        <div class="company-logo">
+            <i class="fas fa-plane"></i>
+            <h2>Aviación Agrícola SAC</h2>
+            <p>Iniciar sesión en tu cuenta</p>
+        </div>
+
+        <!-- Mensaje de error/éxito -->
+        <div id="error-message" class="alert"></div>
+
+        <!-- Formulario con ID CORREGIDO: loginForm en lugar de login-form -->
+        <form id="loginForm">
+            <div class="mb-3 input-icon">
+                <i class="fas fa-user"></i>
+                <input type="email" class="form-control" id="email" placeholder="Correo electrónico" required>
             </div>
 
-            <div th:if="${param.error}" class="alert alert-danger">
-                Usuario o contraseña incorrectos.
+            <div class="mb-3 input-icon">
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
             </div>
 
-            <form th:action="@{/login}" method="post">
-                <div class="mb-3 input-icon">
-                    <i class="fas fa-user"></i>
-                    <input type="email" class="form-control" name="email" placeholder="Correo electrónico" required>
+            <div class="remember-forgot">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Recordarme</label>
                 </div>
+                <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
 
-                <div class="mb-3 input-icon">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
-                </div>
-                <div class="remember-forgot">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Recordarme</label>
-                    </div>
-                    <a href="#">¿Olvidaste tu contraseña?</a>
-                </div>
-
-                <button type="submit" class="btn-login">Iniciar Sesión</button>
-
-                <div class="form-footer">
-                    <p>¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>
-                </div>
-
-            </form>
+            <button type="submit" class="btn-login">Iniciar Sesión</button>
 
             <div class="form-footer">
-                <p><a href="/loginAdmin">Iniciar Sesión como Administrador</a></p>
+                <p>¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>
             </div>
-        </div>
-
-        <div class="text-center mt-4">
-            <p>&copy; 2025 Aviación Agrícola SAC. Todos los derechos reservados.</p>
-        </div>
+        </form>
     </div>
+
+    <div class="text-center mt-4">
+        <p>&copy; 2025 Aviación Agrícola SAC. Todos los derechos reservados.</p>
+    </div>
+</div>
+    <script th:src="@{/js/login.js}"></script>
 </body>
 
 </html>
