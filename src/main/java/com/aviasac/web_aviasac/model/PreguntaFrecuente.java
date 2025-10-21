@@ -1,49 +1,41 @@
 package com.aviasac.web_aviasac.model;
 
-public class PreguntaFrecuente {
-    private int id;
-    private String pregunta;
-    private String respuesta;
-    private boolean estado;
-    
-    public PreguntaFrecuente(int id, String pregunta, String respuesta, boolean estado) {
-        this.id = id;
-        this.pregunta = pregunta;
-        this.respuesta = respuesta;
-        this.estado = estado;
-    }
-    
-    // Getters y setters
-    public int getId() {
-        return id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    public String getPregunta() {
-        return pregunta;
-    }
-    
-    public void setPregunta(String pregunta) {
-        this.pregunta = pregunta;
-    }
-    
-    public String getRespuesta() {
-        return respuesta;
-    }
-    
-    public void setRespuesta(String respuesta) {
-        this.respuesta = respuesta;
-    }
-    
-    public boolean isEstado() {
-        return estado;
-    }
-    
-    public void setEstado(boolean estado) {
-        this.estado = estado;
-    }
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "preguntas_frecuentes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PreguntaFrecuente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotBlank(message = "La pregunta es obligatoria")
+    @Size(max = 255, message = "La pregunta no debe superar {max} caracteres")
+    @Column(name = "pregunta", length = 255, nullable = false)
+    private String pregunta;
+
+    @NotBlank(message = "La respuesta es obligatoria")
+    @Size(max = 5000, message = "La respuesta no debe superar {max} caracteres")
+    @Lob
+    @Column(name = "respuesta", nullable = false)
+    private String respuesta;
+
+    @Column(name = "estado", nullable = false)
+    private Boolean estado;
 }
