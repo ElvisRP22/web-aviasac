@@ -4,7 +4,7 @@ Proyecto académico desarrollado en el curso **Marcos de Desarrollo Web**, cuyo 
 
 [![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-green)](https://github.com/ElvisRP22/web-aviasac/projects)
 [![Versión](https://img.shields.io/badge/Versión-1.0.0-blue)](https://github.com/ElvisRP22/web-aviasac/releases)
-[![Java](https://img.shields.io/badge/Java-17-orange)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+[![Java](https://img.shields.io/badge/Java-24-orange)](https://www.oracle.com/java/technologies/javase/jdk24-archive-downloads.html)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.5-brightgreen)](https://spring.io/projects/spring-boot)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)](https://dev.mysql.com/downloads/mysql/)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
