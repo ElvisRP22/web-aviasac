@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,22 +14,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "testimonios")
+@Table(name = "roles")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Testimonio {
+public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "id_usuario", nullable = false, unique = true)
-    private Usuario usuario;
-
-    @NotBlank(message = "La descripción es obligatoria")
-    @Size(min = 10, max = 255, message = "La descripción debe tener entre {min} y {max} caracteres")
-    @Column(name = "descripcion", length = 255, nullable = false)
-    private String descripcion;
+    @NotBlank(message = "El nombre del rol es obligatorio")
+    @Size(max = 50, message = "El nombre del rol no debe superar {max} caracteres")
+    @Column(name = "nombre", length = 50, nullable = false, unique = true)
+    private String nombre;
 }
