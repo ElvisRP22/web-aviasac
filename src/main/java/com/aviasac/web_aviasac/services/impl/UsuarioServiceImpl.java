@@ -21,11 +21,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Usuario> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Usuario> findById(Integer id) {
         return repo.findById(id);
     }

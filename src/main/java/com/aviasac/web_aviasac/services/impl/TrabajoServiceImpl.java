@@ -21,11 +21,13 @@ public class TrabajoServiceImpl implements TrabajoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Trabajo> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Trabajo> findById(Integer id) {
         return repo.findById(id);
     }

@@ -21,11 +21,13 @@ public class TipoDeCultivoServiceImpl implements TipoDeCultivoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TipoDeCultivo> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<TipoDeCultivo> findById(Integer id) {
         return repo.findById(id);
     }

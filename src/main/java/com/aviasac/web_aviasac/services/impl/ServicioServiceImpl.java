@@ -21,11 +21,13 @@ public class ServicioServiceImpl implements ServicioService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Servicio> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Servicio> findById(Integer id) {
         return repo.findById(id);
     }

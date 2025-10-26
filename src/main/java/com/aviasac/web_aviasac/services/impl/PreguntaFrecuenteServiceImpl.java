@@ -21,11 +21,13 @@ public class PreguntaFrecuenteServiceImpl implements PreguntaFrecuenteService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PreguntaFrecuente> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<PreguntaFrecuente> findById(Integer id) {
         return repo.findById(id);
     }

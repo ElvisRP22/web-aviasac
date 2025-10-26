@@ -21,11 +21,13 @@ public class RolServiceImpl implements RolService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Rol> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Rol> findById(Integer id) {
         return repo.findById(id);
     }

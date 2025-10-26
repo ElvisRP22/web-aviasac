@@ -21,11 +21,13 @@ public class TestimonioServiceImpl implements TestimonioService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Testimonio> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Testimonio> findById(Integer id) {
         return repo.findById(id);
     }

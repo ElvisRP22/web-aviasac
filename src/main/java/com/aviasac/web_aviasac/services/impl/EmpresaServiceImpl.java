@@ -21,11 +21,13 @@ public class EmpresaServiceImpl implements EmpresaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Empresa> findAll() {
         return empresaRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Empresa> findById(Integer id) {
         return empresaRepository.findById(id);
     }

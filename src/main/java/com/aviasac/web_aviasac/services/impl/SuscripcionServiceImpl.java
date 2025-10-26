@@ -21,11 +21,13 @@ public class SuscripcionServiceImpl implements SuscripcionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Suscripcion> findAll() {
         return repo.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Suscripcion> findById(Integer id) {
         return repo.findById(id);
     }
