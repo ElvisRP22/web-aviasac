@@ -1,12 +1,5 @@
 package com.aviasac.web_aviasac.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,45 +7,45 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AdminController {
 
+    // Ruta principal del panel de administración
     @GetMapping("/admin")
     public String adminDashboard(Model model) {
-        // Datos simulados
-        model.addAttribute("usuariosTotales", 1247);
-        model.addAttribute("ventasMes", "$48,960");
-        model.addAttribute("pedidosPendientes", 23);
-        model.addAttribute("productosActivos", 342);
+        // Aquí puedes enviar datos dinámicos a la vista si deseas
+        model.addAttribute("titulo", "Panel de Administración | Aviación Agrícola SAC");
+        return "admin"; // corresponde al archivo admin.html en templates
+    }
 
-        // Último acceso dinámico
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        model.addAttribute("ultimoAcceso", LocalDateTime.now().format(formatter));
+    // Sección de cotizaciones
+    @GetMapping("/admin/cotizaciones")
+    public String cotizaciones(Model model) {
+        model.addAttribute("titulo", "Gestión de Cotizaciones");
+        return "admin"; // reutiliza el mismo template (admin.html)
+    }
 
-        // Lista simulada de mensajes de usuarios
-        List<Map<String, String>> mensajes = new ArrayList<>();
-        
-        Map<String, String> m1 = new HashMap<>();
-        m1.put("nombre", "Juan Pérez");
-        m1.put("email", "juan@example.com");
-        m1.put("contenido", "Necesito información sobre fumigación en campos de arroz.");
-        m1.put("fecha", "Hace 5 minutos");
-        mensajes.add(m1);
+    // Sección de newsletter
+    @GetMapping("/admin/newsletter")
+    public String newsletter(Model model) {
+        model.addAttribute("titulo", "Suscriptores del Newsletter");
+        return "admin";
+    }
 
-        Map<String, String> m2 = new HashMap<>();
-        m2.put("nombre", "María González");
-        m2.put("email", "maria@example.com");
-        m2.put("contenido", "¿Pueden atender zonas rurales en Piura?");
-        m2.put("fecha", "Hace 20 minutos");
-        mensajes.add(m2);
+    // Sección de contactos
+    @GetMapping("/admin/contactos")
+    public String contactos(Model model) {
+        model.addAttribute("titulo", "Consultas de Contacto");
+        return "admin";
+    }
 
-        Map<String, String> m3 = new HashMap<>();
-        m3.put("nombre", "Carlos López");
-        m3.put("email", "carlos@example.com");
-        m3.put("contenido", "Solicito cotización de servicio aéreo.");
-        m3.put("fecha", "Hace 1 hora");
-        mensajes.add(m3);
+    // Sección de reportes
+    @GetMapping("/admin/reportes")
+    public String reportes(Model model) {
+        model.addAttribute("titulo", "Reportes y Estadísticas");
+        return "admin";
+    }
 
-        model.addAttribute("mensajes", mensajes);
-
-        return "admin"; // templates/admin.html
+    // Cerrar sesión (puedes cambiarlo a tu lógica de logout)
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/"; // vuelve a la página de inicio
     }
 }
-

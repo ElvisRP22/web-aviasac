@@ -6,35 +6,35 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aviasac.web_aviasac.model.Testimonio;
-import com.aviasac.web_aviasac.respository.TestimonioRepository;
-import com.aviasac.web_aviasac.services.TestimonioService;
+import com.aviasac.web_aviasac.model.Servicio;
+import com.aviasac.web_aviasac.respository.ServicioRepository;
+import com.aviasac.web_aviasac.services.ServicioService;
 
 @Service
 @Transactional
-public class TestimonioServiceImpl implements TestimonioService {
+public class ServicioServiceImpl implements ServicioService {
 
-    private final TestimonioRepository repo;
+    private final ServicioRepository repo;
 
-    public TestimonioServiceImpl(TestimonioRepository repo) {
+    public ServicioServiceImpl(ServicioRepository repo) {
         this.repo = repo;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Testimonio> findAll() {
+    public List<Servicio> findAll() {
         return repo.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Testimonio> findById(Integer id) {
+    public Optional<Servicio> findById(Integer id) {
         return repo.findById(id);
     }
 
     @Override
-    public Testimonio save(Testimonio testimonio) {
-        return repo.save(testimonio);
+    public Servicio save(Servicio servicio) {
+        return repo.save(servicio);
     }
 
     @Override

@@ -6,35 +6,35 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aviasac.web_aviasac.model.Testimonio;
-import com.aviasac.web_aviasac.respository.TestimonioRepository;
-import com.aviasac.web_aviasac.services.TestimonioService;
+import com.aviasac.web_aviasac.model.Rol;
+import com.aviasac.web_aviasac.respository.RolRepository;
+import com.aviasac.web_aviasac.services.RolService;
 
 @Service
 @Transactional
-public class TestimonioServiceImpl implements TestimonioService {
+public class RolServiceImpl implements RolService {
 
-    private final TestimonioRepository repo;
+    private final RolRepository repo;
 
-    public TestimonioServiceImpl(TestimonioRepository repo) {
+    public RolServiceImpl(RolRepository repo) {
         this.repo = repo;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Testimonio> findAll() {
+    public List<Rol> findAll() {
         return repo.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Testimonio> findById(Integer id) {
+    public Optional<Rol> findById(Integer id) {
         return repo.findById(id);
     }
 
     @Override
-    public Testimonio save(Testimonio testimonio) {
-        return repo.save(testimonio);
+    public Rol save(Rol rol) {
+        return repo.save(rol);
     }
 
     @Override
@@ -42,3 +42,4 @@ public class TestimonioServiceImpl implements TestimonioService {
         repo.deleteById(id);
     }
 }
+
