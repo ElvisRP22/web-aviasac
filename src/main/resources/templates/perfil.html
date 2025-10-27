@@ -23,15 +23,17 @@
                     <div class="card-body text-center p-5">
                         <img src="https://thumbs.dreamstime.com/b/l%C3%ADnea-icono-del-negro-avatar-perfil-de-usuario-121102131.jpg"
                             class="rounded-circle mb-3 border border-3 border-success w-25 h-25" alt="Foto de perfil">
-                            <h3 class="fw-bold">Stephano Benites</h3>
+                        <h3 class="fw-bold">Stephano Benites</h3>
                         <div class="d-flex justify-content-center gap-3">
                             <a href="#" class="btn btn-outline-success" data-bs-toggle="modal"
                                 data-bs-target="#editarPerfilModal">
                                 <i class="fas fa-edit me-2"></i>Editar Perfil
                             </a>
-                            <a href="/login" class="btn btn-danger">
-                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                            </a>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="btn btn-danger logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                </button>
+                            </form>
                         </div>
 
                         <hr class="my-4">
@@ -66,7 +68,7 @@
             </div>
         </div>
     </div>
-   
+
     <!-- Modal Editar Perfil -->
     <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
