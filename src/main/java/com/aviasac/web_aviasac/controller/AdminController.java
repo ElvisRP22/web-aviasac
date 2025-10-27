@@ -43,9 +43,4 @@ public class AdminController {
         return "admin";
     }
 
-    // Cerrar sesión (puedes cambiarlo a tu lógica de logout)
-    @GetMapping("/logout")
-    public String logout() {
-        return "redirect:/"; // vuelve a la página de inicio
-    }
 }
