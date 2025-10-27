@@ -32,21 +32,37 @@
                         <li class="nav-item"><a class="nav-link" href="/testimonios">Clientes</a></li>
                         <li class="nav-item"><a class="nav-link" href="/nosotros">Nosotros</a></li>
                         <li class="nav-item"><a class="nav-link" href="/contactanos">Contáctanos</a></li>
-                        <!-- Botón de Iniciar Sesión -->
-                        <li class="nav-item" id="nav-login">
-                            <a class="nav-link" href="/login">
-                                <i class="fas fa-sign-in-alt me-1"></i>Iniciar Sesión
+                        <!-- Botón de Iniciar Sesión (solo si no está autenticado) -->
+                        <li class="nav-item" sec:authorize="isAnonymous()">
+                            <a class="nav-link" href="/auth/login">
+                                <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
                             </a>
                         </li>
-                        <!-- Usuario logeado (oculto al inicio) -->
-                        <li class="nav-item dropdown d-none" id="nav-user">
+
+                        <!-- Menú desplegable para usuario autenticado -->
+                        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle me-1"></i> <span id="username"></span>
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span th:text="${#authentication.name}">Usuario</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
-                                <li><a class="dropdown-item" href="#" id="logoutBtn">Cerrar Sesión</a></li>
+                                <!-- Opción para todos los usuarios -->
+                                <li><a class="dropdown-item" href="/perfil"><i class="fas fa-user"></i> Perfil</a></li>
+
+                                <!-- Opción solo para ROLE_ADMIN -->
+                                <li sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                    <a class="dropdown-item" href="/admin"><i class="fas fa-tools"></i> Panel Admin</a>
+                                </li>
+
+                                <!-- Cierre de sesión -->
+                                <li>
+                                    <form th:action="@{/logout}" method="post" class="d-inline">
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
 
@@ -73,13 +89,11 @@
                             <li><a href="/" class="text-decoration-none text-light">Inicio</a></li>
                             <li><a href="/servicios" class="text-decoration-none text-light">Servicios</a>
                             </li>
-                            <li><a href="/beneficios"
-                                    class="text-decoration-none text-light">Beneficios</a>
+                            <li><a href="/beneficios" class="text-decoration-none text-light">Beneficios</a>
                             </li>
                             <li><a href="/nosotros" class="text-decoration-none text-light">Nosotros</a>
                             </li>
-                            <li><a href="/contactanos"
-                                    class="text-decoration-none text-light">Contacto</a>
+                            <li><a href="/contactanos" class="text-decoration-none text-light">Contacto</a>
                             </li>
                         </ul>
                     </div>
