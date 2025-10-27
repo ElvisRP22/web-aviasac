@@ -21,9 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('droneForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        // Validación básica
         if (this.checkValidity()) {
-            // Simular envío exitoso
             alert('¡Solicitud enviada con éxito! Nos pondremos en contacto contigo pronto.');
             this.reset();
             hideReservationForm('drone');
@@ -36,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('avionetaForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        // Validación adicional para hectáreas mínimas
         const hectareas = document.getElementById('hectareas-avioneta').value;
         if (hectareas < 10) {
             alert('El servicio con avioneta requiere un mínimo de 10 hectáreas.');
@@ -44,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (this.checkValidity()) {
-            // Simular envío exitoso
             alert('¡Solicitud enviada con éxito! Nos pondremos en contacto contigo pronto.');
             this.reset();
             hideReservationForm('avioneta');
@@ -53,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // 11. Galería de imágenes
+    // Galería de imágenes
     window.openGalleryModal = function (src, alt) {
         const modalImage = document.getElementById('galleryModalImage');
         const modalDescription = document.getElementById('galleryModalDescription');
@@ -65,32 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
         galleryModal.show();
     };
 
-
-    const loginBtn = document.getElementById("nav-login");
-    const userMenu = document.getElementById("nav-user");
-    const usernameSpan = document.getElementById("username");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    // Verificar si hay un usuario logeado
-    const user = localStorage.getItem("usuario");
-
-    if (user) {
-        loginBtn.classList.add("d-none");   // ocultar botón login
-        userMenu.classList.remove("d-none"); // mostrar usuario
-        usernameSpan.textContent = user;
-    }
-
-    // Cerrar sesión
-    logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("usuario");
-        location.reload(); // refresca la página para volver a mostrar login
-    });
-
-
-
-    // Inicializar y Ocultar formularios de reserva al cargar la página
+    // Inicializar y ocultar formularios de reserva al cargar la página
     document.querySelectorAll('.reservation-form').forEach(form => {
         form.style.display = 'none';
     });
-
 });
