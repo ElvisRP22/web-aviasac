@@ -43,6 +43,11 @@ public class Usuario {
     @Column(name = "nombre", length = 200, nullable = false)
     private String nombre;
 
+    @NotBlank(message = "El username es obligatorio")
+    @Size(max = 20, message = "El username no debe superar {max} caracteres")
+    @Column(name = "username", length = 20, nullable = false, unique = true)
+    private String username;
+
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "El email no tiene formato válido")
     @Size(max = 150, message = "El email no debe superar {max} caracteres")
