@@ -3,15 +3,23 @@ package com.aviasac.web_aviasac.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.aviasac.web_aviasac.services.PreguntaFrecuenteService;
 
 @Controller
 public class AdminController {
+
+    private final PreguntaFrecuenteService pFrecuenteService;
+
+    public AdminController(PreguntaFrecuenteService pFrecuenteService) {
+        this.pFrecuenteService = pFrecuenteService;
+    }
 
     // Ruta principal del panel de administración
     @GetMapping("/admin")
     public String adminDashboard(Model model) {
         // Aquí puedes enviar datos dinámicos a la vista si deseas
         model.addAttribute("titulo", "Panel de Administración | Aviación Agrícola SAC");
+        model.addAttribute("preguntasFrecuentes", pFrecuenteService.findAll());
         return "admin"; // corresponde al archivo admin.html en templates
     }
 
