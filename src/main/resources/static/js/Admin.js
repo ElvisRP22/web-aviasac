@@ -20,14 +20,15 @@ function showSection(sectionId) {
         'cotizaciones': 'Gestión de Cotizaciones',
         'newsletter': 'Suscriptores Newsletter',
         'contactos': 'Consultas de Contacto',
-        'reportes': 'Reportes y Estadísticas'
+        'reportes': 'Reportes y Estadísticas',
+        'faqs': 'Preguntas Frecuentes'
     };
     document.getElementById('section-title').textContent = titles[sectionId];
 }
 
 // Configurar event listeners para los enlaces del sidebar
 document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', function (e) {
         e.preventDefault();
         const sectionId = this.getAttribute('data-section');
         showSection(sectionId);
@@ -67,7 +68,7 @@ function cargarDatos() {
         cotizacionesBody.innerHTML = '';
         cotizaciones.forEach(cotizacion => {
             const badgeClass = cotizacion.estado === 'Pendiente' ? 'badge-pending' :
-                             cotizacion.estado === 'Completada' ? 'badge-completed' : 'badge-cancelled';
+                cotizacion.estado === 'Completada' ? 'badge-completed' : 'badge-cancelled';
 
             const row = `
                 <tr>
@@ -242,7 +243,7 @@ function exportToCSV(tipo) {
     let datos = [];
     let nombreArchivo = '';
 
-    switch(tipo) {
+    switch (tipo) {
         case 'cotizaciones':
             datos = cotizaciones;
             nombreArchivo = 'cotizaciones.csv';
@@ -262,12 +263,12 @@ function exportToCSV(tipo) {
 }
 
 // Cargar datos cuando la página esté lista
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     cargarDatos();
 
     // Configurar event listeners para las tarjetas del dashboard
     document.querySelectorAll('.stats-card').forEach((card, index) => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             const sections = ['cotizaciones', 'newsletter', 'contactos', 'dashboard'];
             if (sections[index]) {
                 showSection(sections[index]);
@@ -275,3 +276,92 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+const faqModal = document.getElementById('faqModal');
+faqModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    const id = button.getAttribute('data-id');
+    const pregunta = button.getAttribute('data-pregunta');
+    const respuesta = button.getAttribute('data-respuesta');
+    const estado = button.getAttribute('data-estado');
+
+    document.getElementById('faqId').value = id || '';
+    document.getElementById('pregunta').value = pregunta || '';
+    document.getElementById('respuesta').value = respuesta || '';
+    document.getElementById('estado').value = estado === 'true' ? 'true' : 'false';
+});
+document.getElementById('faqForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    const formData = new FormData(this);
+    const id = formData.get('id');
+    const url = id ? `/faqs/editar/${id}` : '/faqs/crear';
+
+    fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            [header]: token
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                bootstrap.Modal.getInstance(document.getElementById('faqModal')).hide();
+                this.reset();
+                mostrarToast(data.message, 'success');
+            } else {
+                throw new Error(data.message || 'Error al eliminar');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            mostrarToast(error.message || 'Hubo un problema al guardar la FAQ.', 'danger');
+        });
+});
+
+document.querySelectorAll('.btn-eliminar').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const id = this.getAttribute('data-id');
+        if (!confirm('¿Estás seguro de eliminar esta FAQ?')) return;
+
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        fetch(`/faqs/eliminar/${id}`, {
+            method: 'POST',
+            headers: {
+                [header]: token
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    mostrarToast(data.message, 'success');
+                } else {
+                    throw new Error(data.message || 'Error al eliminar');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                mostrarToast(error.message || 'Hubo un problema al eliminar la FAQ.', 'danger');
+            });
+    });
+});
+
+function mostrarToast(mensaje, tipo = 'success') {
+    const toastEl = document.getElementById('toastMensaje');
+    const toastTexto = document.getElementById('toastTexto');
+
+    toastTexto.textContent = mensaje;
+
+    // Cambia color según tipo
+    toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning');
+    toastEl.classList.add(`bg-${tipo}`);
+
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+}
