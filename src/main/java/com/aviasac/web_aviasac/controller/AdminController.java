@@ -4,23 +4,34 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.aviasac.web_aviasac.services.PreguntaFrecuenteService;
+import com.aviasac.web_aviasac.services.ServicioService;
+import com.aviasac.web_aviasac.services.SuscripcionService;
 
 @Controller
 public class AdminController {
 
     private final PreguntaFrecuenteService pFrecuenteService;
+    private final SuscripcionService suscripcionService;
+    private final ServicioService servicioService;
 
-    public AdminController(PreguntaFrecuenteService pFrecuenteService) {
+    public AdminController(
+            PreguntaFrecuenteService pFrecuenteService,
+            SuscripcionService suscripcionService,
+            ServicioService servicioService) {
+
         this.pFrecuenteService = pFrecuenteService;
+        this.suscripcionService = suscripcionService;
+        this.servicioService = servicioService;
     }
 
-    // Ruta principal del panel de administración
     @GetMapping("/admin")
     public String adminDashboard(Model model) {
-        // Aquí puedes enviar datos dinámicos a la vista si deseas
+
         model.addAttribute("titulo", "Panel de Administración | Aviación Agrícola SAC");
         model.addAttribute("preguntasFrecuentes", pFrecuenteService.findAll());
-        return "admin"; // corresponde al archivo admin.html en templates
+        model.addAttribute("suscriptores", suscripcionService.findAll());
+        model.addAttribute("servicios", servicioService.findAll());
+        return "admin";
     }
 
     // Sección de cotizaciones
