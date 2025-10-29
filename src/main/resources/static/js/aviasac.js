@@ -43,3 +43,54 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+
+// Suscribirse a newsletter
+document.getElementById('newsletterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const correo = document.getElementById('newsletterEmail').value;
+    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    const formData = new FormData();
+    formData.append('correo', correo);
+
+    fetch('/newsletter/suscribirse', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            [header]: token
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        mostrarToast(data.message, data.success ? 'success' : 'warning');
+        if (data.success) {
+            document.getElementById('newsletterForm').reset();
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        mostrarToast('Error al suscribirse', 'danger');
+    });
+});
+
+// Mostrar mensaje toast
+function mostrarToast(mensaje, tipo = 'success') {
+    const toast = document.getElementById('newsletterToast');
+    const mensajeEl = document.getElementById('newsletterToastMessage');
+
+    toast.classList.remove('bg-success', 'bg-danger', 'bg-warning');
+    toast.classList.add(`bg-${tipo}`);
+    mensajeEl.textContent = mensaje;
+
+    toast.style.display = 'block';
+
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 4000);
+}
+
+function ocultarToast() {
+    document.getElementById('newsletterToast').style.display = 'none';
+}
