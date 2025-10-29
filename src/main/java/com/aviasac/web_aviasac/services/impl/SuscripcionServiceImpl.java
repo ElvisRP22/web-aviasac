@@ -41,4 +41,9 @@ public class SuscripcionServiceImpl implements SuscripcionService {
     public void deleteById(Integer id) {
         repo.deleteById(id);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return repo.existsByEmail(email);
+    }
 }
