@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/Admin.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
 
 </head>
 
@@ -27,11 +28,13 @@
                 <nav class="nav flex-column">
                     <a href="#" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i>
                         Dashboard</a>
+                    <a href="#" data-section="servicios"><i class="fas fa-wrench"></i> Servicios</a>
                     <a href="#" data-section="cotizaciones"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a>
                     <a href="#" data-section="newsletter"><i class="fas fa-newspaper"></i> Newsletter</a>
                     <a href="#" data-section="faqs"><i class="fas fa-question-circle"></i>FAQs</a>
                     <a href="#" data-section="contactos"><i class="fas fa-envelope"></i> Contactos</a>
                     <a href="#" data-section="reportes"><i class="fas fa-chart-bar"></i> Reportes</a>
+
                 </nav>
 
                 <form th:action="@{/logout}" method="post">
@@ -217,26 +220,80 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
+                                            <th>Id</th>
                                             <th>Email</th>
                                             <th>Fecha Suscripción</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>cliente1@example.com</td>
-                                            <td>2023-09-20</td>
+                                        <tr th:each=" suscriptor : ${suscriptores}">
+                                            <td th:text="${suscriptor.id}"></td>
+                                            <td th:text="${suscriptor.email}">cliente1@example.com</td>
+                                            <td
+                                                th:text="${#temporals.format(suscriptor.fechaSuscripcion, 'dd/MM/yyyy HH:mm')}">
+                                                28/10/2025 13:25</td>
+                                            <td>
+                                                <span
+                                                    th:classappend="${suscriptor.estado} ? 'badge bg-success' : 'badge bg-danger'">
+                                                    <span th:text="${suscriptor.estado} ? 'Activo' : 'Inactivo'"></span>
+                                                </span>
+                                            </td>
                                             <td>
                                                 <button class="btn btn-sm btn-danger btn-action">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Servicios Section -->
+                <div id="servicios" class="section">
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center">
+                            <span><i class="fas fa-wrench me-2"></i>Servicios</span>
+                            <div class="ms-auto d-flex gap-2">
+                                <button class="btn btn-sm btn-light" onclick="exportToCSV('contactos')">
+                                    <i class="fas fa-download me-1"></i>Exportar
+                                </button>
+                                <button class="btn btn-sm btn-light" data-bs-toggle="modal"
+                                    data-bs-target="#servicioModal">
+                                    <i class="fas fa-plus me-1"></i>Nuevo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
                                         <tr>
-                                            <td>cliente2@example.com</td>
-                                            <td>2023-09-18</td>
+                                            <th>Id</th>
+                                            <th>Nombre</th>
+                                            <th>Descripcion</th>
+                                            <th>Img</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="servicio : ${servicios}">
+                                            <td th:text="${servicio.id}">1</td>
+                                            <td th:text="${servicio.nombre}"></td>
+                                            <td th:text="${servicio.descripcion}"></td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger btn-action">
+                                                <img th:src="${servicio.img}" class="img-fluid" alt="">
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning btn-action" data-bs-toggle="modal"
+                                                    data-bs-target="#servicioModal">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger btn-eliminar">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -438,6 +495,46 @@
                     </div>
                 </div>
 
+                <!--Modal crear y editar servicio-->
+                <div class="modal fade" id="servicioModal" tabindex="-1" aria-labelledby="servicioModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="servicioForm">
+                                <input type="hidden" name="id" id="faqId" />
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="servicioModalLabel">Gestionar Servicio</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="descripcion" class="form-label">Respuesta</label>
+                                        <textarea id="descripcionServicio" name="descripcion"></textarea>
+
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="estado" class="form-label">Estado</label>
+                                        <select class="form-select" id="estado" name="estado" required>
+                                            <option value="true">Activo</option>
+                                            <option value="false">Inactivo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
                     <div id="toastMensaje" class="toast align-items-center text-white bg-success border-0" role="alert"
                         aria-live="assertive" aria-atomic="true">
@@ -454,9 +551,11 @@
             </div>
         </div>
     </div>
-
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/Admin.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
 </body>
 
 </html>
