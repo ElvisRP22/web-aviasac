@@ -21,7 +21,8 @@ function showSection(sectionId) {
         'newsletter': 'Suscriptores Newsletter',
         'contactos': 'Consultas de Contacto',
         'reportes': 'Reportes y Estadísticas',
-        'faqs': 'Preguntas Frecuentes'
+        'faqs': 'Preguntas Frecuentes',
+        'servicios': 'Gestion de Servicios'
     };
     document.getElementById('section-title').textContent = titles[sectionId];
 }
@@ -88,26 +89,6 @@ function cargarDatos() {
                 </tr>
             `;
             cotizacionesBody.innerHTML += row;
-        });
-    }
-
-    // Cargar suscriptores
-    const newsletterBody = document.querySelector('#newsletter tbody');
-    if (newsletterBody) {
-        newsletterBody.innerHTML = '';
-        suscriptores.forEach(suscriptor => {
-            const row = `
-                <tr>
-                    <td>${suscriptor.email}</td>
-                    <td>${suscriptor.fecha}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger btn-action" onclick="eliminarSuscriptor('${suscriptor.email}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-            newsletterBody.innerHTML += row;
         });
     }
 
@@ -365,3 +346,11 @@ function mostrarToast(mensaje, tipo = 'success') {
     const toast = new bootstrap.Toast(toastEl);
     toast.show();
 }
+
+$(document).ready(function() {
+    $('#descripcionServicio').summernote({
+      placeholder: 'Describe el servicio con características, beneficios, etc.',
+      tabsize: 2,
+      height: 250
+    });
+  });
