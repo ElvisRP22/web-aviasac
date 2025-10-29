@@ -10,4 +10,5 @@ public interface SuscripcionService {
     Optional<Suscripcion> findById(Integer id);
     Suscripcion save(Suscripcion suscripcion);
     void deleteById(Integer id);
+    boolean existsByEmail(String email);
 }
