@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>Aviación Agrícola SAC - Servicios de Fumigación</title>
     <!-- Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
@@ -50,6 +52,17 @@
                         </button>
                     </form>
                 </div>
+            </div>
+        </div>
+        <div id="newsletterToast"
+            class="toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 m-3"
+            role="alert" aria-live="assertive" aria-atomic="true" style="display: none; z-index: 9999;">
+            <div class="d-flex">
+                <div class="toast-body" id="newsletterToastMessage">
+                    
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="ocultarToast()"
+                    aria-label="Cerrar"></button>
             </div>
         </div>
     </section>
