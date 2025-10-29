@@ -31,7 +31,8 @@ public class SecurityConfig {
                                 "/beneficios",
                                 "/testimonios",
                                 "/nosotros",
-                                "/contactanos")
+                                "/contactanos", 
+                                "/newsletter/suscribirse")
                         .permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated())
