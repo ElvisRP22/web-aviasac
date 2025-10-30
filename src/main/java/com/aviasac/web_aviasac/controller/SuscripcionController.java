@@ -39,7 +39,7 @@ public class SuscripcionController {
         suscriptor.setEstado(true);
         suscriptor.setFechaSuscripcion(LocalDateTime.now());
 
-        suscripcionService.save(suscriptor); // guardar en base de datos
+        suscripcionService.save(suscriptor);
 
         return ResponseEntity.ok(Map.of("success", true, "message", "¡Gracias por suscribirte!"));
     }
