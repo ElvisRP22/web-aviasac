@@ -41,4 +41,10 @@ public class PreguntaFrecuenteServiceImpl implements PreguntaFrecuenteService {
     public void deleteById(Integer id) {
         repo.deleteById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PreguntaFrecuente> findOnlyActive() {
+        return repo.findByEstadoTrue();
+    }
 }

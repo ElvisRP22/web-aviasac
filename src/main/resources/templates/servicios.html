@@ -22,45 +22,21 @@
                     cultivos</p>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card service-card shadow">
-                        <img th:src="@{/img/dron.jpg}" class="card-img-top"
-                            alt="Fumigación con Drone">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <div class="col" th:each="servicio : ${servicios}">
+                    <div class="card h-100 shadow-sm">
+                        <img th:src="@{'/uploads/' + ${servicio.urlImagen}}" class="card-img-top"
+                            alt="imagen servicio" />
                         <div class="card-body">
-                            <h3 class="card-title">Fumigación con Drone</h3>
-                            <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en
-                                áreas de difícil acceso o cultivos delicados.</p>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Precisión milimétrica</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Menor impacto ambiental</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Ideal para terrenos irregulares
-                                </li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Monitoreo en tiempo real</li>
-                            </ul>
-                            <button class="btn btn-success mt-3" onclick="showReservationForm('drone')">Solicitar
-                                Cotización</button>
+                            <h5 class="card-title" th:text="${servicio.nombre}"></h5>
+                            <div class="card-text descripcion-preview" th:utext="${servicio.descripcion}">
+                            </div>
+                            <button class="btn btn btn-success btn-sm"
+                                th:onclick="'solicitarCotizacion(' + ${servicio.id} + ')'">
+                                Solicitar cotización
+                            </button>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="card service-card shadow">
-                        <img th:src="@{/img/avioneta2.jpg}"
-                            class="card-img-top" alt="Fumigación con Avioneta">
-                        <div class="card-body">
-                            <h3 class="card-title">Fumigación con Avioneta</h3>
-                            <p class="card-text">Cobertura rápida y eficaz para grandes extensiones de terreno, con
-                                resultados probados en todo tipo de cultivos.</p>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Cobertura de grandes áreas</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Aplicación uniforme</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Rapidez en la aplicación</li>
-                                <li><i class="fas fa-check-circle text-success me-2"></i>Experiencia comprobada</li>
-                            </ul>
-                            <button class="btn btn-success mt-3" onclick="showReservationForm('avioneta')">Solicitar
-                                Cotización</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -207,8 +183,7 @@
 
             <div class="row g-3">
                 <div class="card service-card shadow col-md-4">
-                    <img th:src="@{/img/dron.jpg}"  class="card-img-top"
-                         alt="Fumigación con Drone">
+                    <img th:src="@{/img/dron.jpg}" class="card-img-top" alt="Fumigación con Drone">
 
                     <div class="card-body">
                         <h3 class="card-title">Fumigación con Drone</h3>
@@ -217,8 +192,7 @@
                     </div>
                 </div>
                 <div class="card service-card shadow col-md-4">
-                    <img th:src="@{/img/dron.jpg}"  class="card-img-top"
-                         alt="Fumigación con Drone">
+                    <img th:src="@{/img/dron.jpg}" class="card-img-top" alt="Fumigación con Drone">
                     <div class="card-body">
                         <h3 class="card-title">Fumigación con Drone</h3>
                         <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
@@ -226,8 +200,7 @@
                     </div>
                 </div>
                 <div class="card service-card shadow col-md-4">
-                    <img th:src="@{/img/dron.jpg}"  class="card-img-top"
-                         alt="Fumigación con Drone">
+                    <img th:src="@{/img/dron.jpg}" class="card-img-top" alt="Fumigación con Drone">
                     <div class="card-body">
                         <h3 class="card-title">Fumigación con Drone</h3>
                         <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
@@ -235,8 +208,7 @@
                     </div>
                 </div>
                 <div class="card service-card shadow col-md-4">
-                    <img th:src="@{/img/dron.jpg}"  class="card-img-top"
-                         alt="Fumigación con Drone">
+                    <img th:src="@{/img/dron.jpg}" class="card-img-top" alt="Fumigación con Drone">
                     <div class="card-body">
                         <h3 class="card-title">Fumigación con Drone</h3>
                         <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
@@ -244,8 +216,7 @@
                     </div>
                 </div>
                 <div class="card service-card shadow col-md-4">
-                    <img th:src="@{/img/dron.jpg}"  class="card-img-top"
-                         alt="Fumigación con Drone">
+                    <img th:src="@{/img/dron.jpg}" class="card-img-top" alt="Fumigación con Drone">
                     <div class="card-body">
                         <h3 class="card-title">Fumigación con Drone</h3>
                         <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
@@ -253,8 +224,7 @@
                     </div>
                 </div>
                 <div class="card service-card shadow col-md-4">
-                    <img th:src="@{/img/dron.jpg}"  class="card-img-top"
-                         alt="Fumigación con Drone">
+                    <img th:src="@{/img/dron.jpg}" class="card-img-top" alt="Fumigación con Drone">
                     <div class="card-body">
                         <h3 class="card-title">Fumigación con Drone</h3>
                         <p class="card-text">Tecnología de vanguardia para una fumigación precisa y eficiente en áreas
@@ -280,7 +250,7 @@
             </div>
         </div>
     </div>
-    
+
     <div th:replace="fragments/base :: footer"></div>
 
     <!-- Botón flotante WhatsApp -->

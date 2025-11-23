@@ -14,42 +14,48 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomLoginSuccessHandler customLoginSuccessHandler;
+        @Autowired
+        private CustomLoginSuccessHandler customLoginSuccessHandler;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/img/**").permitAll()
-                        .requestMatchers(
-                                "/auth/registro",
-                                "/auth/login",
-                                "/",
-                                "/servicios",
-                                "/beneficios",
-                                "/testimonios",
-                                "/nosotros",
-                                "/contactanos", 
-                                "/newsletter/suscribirse")
-                        .permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/auth/login")
-                        .successHandler(customLoginSuccessHandler)
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login?logout")
-                        .permitAll());
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                                                .permitAll()
+                                                .requestMatchers("/img/**", "/uploads/**").permitAll()
+                                                .requestMatchers(
+                                                                "/auth/registro",
+                                                                "/auth/login",
+                                                                "/",
+                                                                "/servicios",
+                                                                "/servicios/**",
+                                                                "/beneficios",
+                                                                "/beneficios/**",
+                                                                "/testimonios",
+                                                                "/nosotros",
+                                                                "/contactanos",
+                                                                "/contacto/enviar",
+                                                                "/newsletter/suscribirse")
+                                                .permitAll()
 
-        return http.build();
-    }
+                                                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                                                .requestMatchers("/servicios/guardar").hasAuthority("ROLE_ADMIN")
+                                                .anyRequest().authenticated())
+                                .formLogin(form -> form
+                                                .loginPage("/auth/login")
+                                                .successHandler(customLoginSuccessHandler)
+                                                .permitAll())
+                                .logout(logout -> logout
+                                                .logoutUrl("/logout")
+                                                .logoutSuccessUrl("/auth/login?logout")
+                                                .permitAll());
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+                return http.build();
+        }
+
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }

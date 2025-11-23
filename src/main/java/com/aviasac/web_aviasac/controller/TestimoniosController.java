@@ -16,7 +16,7 @@ public class TestimoniosController {
 
     @GetMapping("/testimonios")
     public String testimonios(Model model) {
-        model.addAttribute("preguntasFrecuentes", pFrecuenteService.findAll());
+        model.addAttribute("preguntasFrecuentes", pFrecuenteService.findOnlyActive());
         return "testimonios";
     }
 

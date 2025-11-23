@@ -1,35 +1,43 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // 7. Formulario de contacto
-    document.getElementById('contactForm').addEventListener('submit', function (e) {
+    document.getElementById('contactForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        if (this.checkValidity()) {
-            // Simular envío exitoso
-            alert('¡Mensaje enviado con éxito! Te responderemos a la brevedad.');
-            this.reset();
-        } else {
-            alert('Por favor, complete todos los campos obligatorios.');
+        if (!this.checkValidity()) {
+            mostrarNotificacion("Por favor, complete todos los campos obligatorios.", "danger");
+            return;
+        }
+
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch("/contacto/enviar", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                mostrarNotificacion(data.message, "success");
+                this.reset();
+            } else {
+                mostrarNotificacion(data.message, "danger");
+            }
+
+        } catch (error) {
+            mostrarNotificacion("Ocurrió un error al enviar el mensaje.", "danger");
         }
     });
 
-    const loginBtn = document.getElementById("nav-login");
-    const userMenu = document.getElementById("nav-user");
-    const usernameSpan = document.getElementById("username");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    // Verificar si hay un usuario logeado
-    const user = localStorage.getItem("usuario");
-
-    if (user) {
-        loginBtn.classList.add("d-none");   // ocultar botón login
-        userMenu.classList.remove("d-none"); // mostrar usuario
-        usernameSpan.textContent = user;
-    }
-
-    // Cerrar sesión
-    logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("usuario");
-        location.reload(); // refresca la página para volver a mostrar login
-    });
-
 });
+
+function mostrarNotificacion(mensaje, tipo) {
+    const contenedor = document.getElementById("alertContainer");
+
+    contenedor.innerHTML = `
+        <div class="alert alert-${tipo} alert-dismissible fade show mt-3" role="alert">
+            ${mensaje}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `;
+}

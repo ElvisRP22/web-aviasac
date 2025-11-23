@@ -1,3 +1,7 @@
+// Obtener token CSRF desde el HTML
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
+
 // Función para cambiar entre secciones
 function showSection(sectionId) {
     // Ocultar todas las secciones
@@ -354,3 +358,97 @@ $(document).ready(function() {
       height: 250
     });
   });
+
+
+// =========================
+// Abrir modal para NUEVO servicio
+// =========================
+function abrirModalNuevoServicio() {
+    limpiarFormularioServicio();
+
+    document.getElementById("servicioModalLabel").innerText = "Registrar Servicio";
+    document.getElementById("servicioId").value = "";
+    
+    let modal = new bootstrap.Modal(document.getElementById("servicioModal"));
+    modal.show();
+}
+
+// =========================
+// Abrir modal para EDITAR servicio
+// =========================
+function abrirModalEditarServicio(servicio) {
+    limpiarFormularioServicio();
+
+    document.getElementById("servicioModalLabel").innerText = "Editar Servicio";
+    document.getElementById("servicioId").value = servicio.id;
+    document.getElementById("nombre").value = servicio.nombre;
+    document.getElementById("descripcionServicio").value = servicio.descripcion;
+    document.getElementById("estado").value = servicio.estado ? "true" : "false";
+
+    let modal = new bootstrap.Modal(document.getElementById("servicioModal"));
+    modal.show();
+}
+
+// =========================
+// Limpiar formulario
+// =========================
+function limpiarFormularioServicio() {
+    document.getElementById("servicioForm").reset();
+    document.getElementById("servicioId").value = "";
+}
+
+// =========================
+// Guardar servicio (Fetch)
+// =========================
+document.getElementById("servicioForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = document.getElementById("servicioForm");
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch("/servicios/guardar", {
+            method: "POST",
+            body: formData,
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            mostrarToast("success", data.message);
+            form.reset();
+
+            // Cerrar el modal
+            bootstrap.Modal.getInstance(document.getElementById("servicioModal")).hide();
+
+            setTimeout(() => location.reload(), 700);
+        } else {
+            mostrarToast("danger", "Error: " + data.message);
+        }
+
+    } catch (error) {
+        mostrarToast("danger", "Error inesperado: " + error.message);
+    }
+});
+
+// =========================
+// Toast de mensajes
+// =========================
+function mostrarToast(tipo, mensaje) {
+    const contenedor = document.createElement("div");
+    contenedor.innerHTML = `
+        <div class="toast align-items-center text-bg-${tipo} border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">${mensaje}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(contenedor);
+
+    setTimeout(() => contenedor.remove(), 3000);
+}
