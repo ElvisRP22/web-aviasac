@@ -1,103 +1,183 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/base :: layout(~{::main}, ~{::title}, ~{::link}, ~{::script})}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/testimonios.css}">
-    <!-- link Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <title>Testimonios | Aviacion Agrícola S.A.C</title>
+    <link rel="stylesheet" th:href="@{/css/testimonios.css}">
+    
+    <style>
+        .rating-stars {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ddd;
+        }
+        .rating-stars .fas.active {
+            color: #ffc107;
+        }
+        .rating-stars .fas:hover {
+            color: #ffdb73;
+        }
+    </style>
 </head>
 
 <body>
-    <div th:replace="fragments/base :: navbar"></div>
 
-    <!-- Sección Testimonios -->
-    <section class="py-5 bg-light" id="testimonios">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Testimonios de Clientes</h2>
-                <p class="text-muted">Lo que nuestros clientes opinan de nosotros</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card shadow h-100">
-                        <div class="card-body">
-                            <p class="card-text">“Excelente servicio con drone, muy profesionales y rápidos. Mis
-                                cultivos quedaron protegidos en poco tiempo.”</p>
-                            <h5 class="card-title mt-3">Juan Pérez</h5>
-                            <p class="text-muted">Agricultor de arroz</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card shadow h-100">
-                        <div class="card-body">
-                            <p class="card-text">“Con la fumigación en avioneta pude cubrir más de 50 hectáreas en un
-                                solo día. Los recomiendo totalmente.”</p>
-                            <h5 class="card-title mt-3">María López</h5>
-                            <p class="text-muted">Productora de maíz</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card shadow h-100">
-                        <div class="card-body">
-                            <p class="card-text">“Un equipo comprometido y con excelente atención. Se nota que conocen
-                                bien el sector agrícola.”</p>
-                            <h5 class="card-title mt-3">Carlos Gómez</h5>
-                            <p class="text-muted">Cafetícola</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección FAQ -->
-    <section class="py-5" id="faq">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Preguntas Frecuentes</h2>
-                <p class="text-muted">Resolvemos tus dudas más comunes</p>
-            </div>
-            <div class="accordion" id="faqAccordion">
-                <div th:each="faq, iterStat : ${preguntasFrecuentes}" class="accordion-item">
-                    <h2 class="accordion-header" th:id="'faq' + ${iterStat.index}">
-                        <button class="accordion-button" th:classappend="${iterStat.index != 0} ? 'collapsed' : ''"
-                            type="button" data-bs-toggle="collapse" th:attr="data-bs-target='#collapse' + ${iterStat.index}, 
-                             aria-controls='collapse' + ${iterStat.index},
-                             aria-expanded=${iterStat.index == 0}" th:text="${faq.pregunta}">
+    <main>
+        <section class="py-5 bg-light" id="testimonios">
+            <div class="container">
+                
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Testimonios de Clientes</h2>
+                    <p class="text-muted mb-4">Lo que nuestros clientes opinan de nosotros</p>
+                    
+                    <div class="d-flex justify-content-center gap-2">
+                        <button sec:authorize="isAuthenticated()" 
+                                class="btn btn-success btn-lg shadow-sm"
+                                onclick="abrirModalTestimonio()">
+                            <i class="fas fa-pen-nib me-2"></i>Escribir mi opinión
                         </button>
-                    </h2>
-                    <div th:id="'collapse' + ${iterStat.index}" class="accordion-collapse collapse"
-                        th:classappend="${iterStat.index == 0} ? 'show' : ''" data-bs-parent="#faqAccordion"
-                        th:aria-labelledby="'faq' + ${iterStat.index}">
-                        <div class="accordion-body" th:text="${faq.respuesta}">
+
+                        <a sec:authorize="isAnonymous()" 
+                           th:href="@{/auth/login}" 
+                           class="btn btn-outline-success">
+                            <i class="fas fa-sign-in-alt me-2"></i>Inicia sesión para opinar
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    <div th:if="${#lists.isEmpty(testimonios)}" class="col-12 text-center text-muted">
+                        <p>Aún no hay testimonios. ¡Sé el primero en comentar!</p>
+                    </div>
+
+                    <div class="col-md-4" th:each="testimonio : ${testimonios}">
+                        <div class="card shadow h-100 border-0">
+                            <div class="card-body p-4">
+                                <div class="mb-3 text-warning">
+                                    <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, testimonio.calificacion)}"></i>
+                                    <i class="far fa-star" th:if="${testimonio.calificacion < 5}" 
+                                       th:each="i : ${#numbers.sequence(testimonio.calificacion + 1, 5)}"></i>
+                                </div>
+                                
+                                <p class="card-text fst-italic" th:text="${'“' + testimonio.comentario + '”'}"></p>
+                                
+                                <div class="mt-3">
+                                    <h5 class="card-title fw-bold mb-0" th:text="${testimonio.usuario.nombre}">Cliente</h5>
+                                    <small class="text-muted" 
+                                           th:text="${#temporals.format(testimonio.fecha, 'dd/MM/yyyy')}">Fecha</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <section class="py-5 bg-white" id="faq">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Preguntas Frecuentes</h2>
+                    <p class="text-muted">Resolvemos tus dudas más comunes</p>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="accordion" id="faqAccordion">
+                            <div th:each="faq, iterStat : ${preguntasFrecuentes}" class="accordion-item">
+                                <h2 class="accordion-header" th:id="'faq' + ${iterStat.index}">
+                                    <button class="accordion-button" 
+                                            th:classappend="${iterStat.index != 0} ? 'collapsed' : ''"
+                                            type="button" data-bs-toggle="collapse" 
+                                            th:attr="data-bs-target='#collapse' + ${iterStat.index}"
+                                            th:text="${faq.pregunta}">
+                                    </button>
+                                </h2>
+                                <div th:id="'collapse' + ${iterStat.index}" 
+                                     class="accordion-collapse collapse"
+                                     th:classappend="${iterStat.index == 0} ? 'show' : ''" 
+                                     data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary" th:text="${faq.respuesta}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal fade" id="modalTestimonio" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">Comparte tu experiencia</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form th:action="@{/testimonios/guardar}" method="post">
+                        <div class="modal-body text-center">
+                            <p class="text-muted">¿Qué te pareció nuestro servicio?</p>
+                            
+                            <input type="hidden" name="calificacion" id="ratingValue" value="5" required>
+                            
+                            <div class="rating-stars mb-3" id="starsContainer">
+                                <i class="fas fa-star active" data-value="1"></i>
+                                <i class="fas fa-star active" data-value="2"></i>
+                                <i class="fas fa-star active" data-value="3"></i>
+                                <i class="fas fa-star active" data-value="4"></i>
+                                <i class="fas fa-star active" data-value="5"></i>
+                            </div>
+
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Deja tu comentario aquí" 
+                                          id="comentario" name="comentario" style="height: 100px" required></textarea>
+                                <label for="comentario">Tu comentario</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Publicar Reseña</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </section>
 
-
-    <div th:replace="fragments/base :: footer"></div>
-
-    <!-- Botón flotante WhatsApp -->
-    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
-        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    </main>
 
     <script th:src="@{/js/testimonios.js}"></script>
+    
+    <script>
+        function abrirModalTestimonio() {
+            var myModal = new bootstrap.Modal(document.getElementById('modalTestimonio'));
+            myModal.show();
+        }
+
+        // Lógica de estrellas interactivas
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('#starsContainer i');
+            const ratingInput = document.getElementById('ratingValue');
+
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    ratingInput.value = value;
+                    updateStars(value);
+                });
+            });
+
+            function updateStars(value) {
+                stars.forEach(s => {
+                    if (s.getAttribute('data-value') <= value) {
+                        s.classList.add('active');
+                        s.classList.remove('text-muted');
+                    } else {
+                        s.classList.remove('active');
+                        s.style.color = '#ddd'; // Color gris
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
-
 </html>

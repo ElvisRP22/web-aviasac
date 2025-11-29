@@ -15,20 +15,24 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.aviasac.web_aviasac.model.Servicio;
 import com.aviasac.web_aviasac.services.ServicioService;
+import com.aviasac.web_aviasac.services.TipoDeCultivoService;
 
 @Controller
 @RequestMapping("/servicios")
 public class ServiciosController {
 
     private final ServicioService servicioService;
+    private final TipoDeCultivoService tipoDeCultivoService;
 
-    public ServiciosController(ServicioService servicioService) {
+    public ServiciosController(ServicioService servicioService, TipoDeCultivoService tipoDeCultivoService) {
         this.servicioService = servicioService;
+        this.tipoDeCultivoService = tipoDeCultivoService;
     }
 
     @GetMapping("")
     public String servicios(Model model) {
         model.addAttribute("servicios", servicioService.findAll());
+        model.addAttribute("tiposDeCultivo", tipoDeCultivoService.findAll());
         return "servicios";
     }
 

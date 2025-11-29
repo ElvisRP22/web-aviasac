@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+<body>
+    <section>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-file-invoice-dollar me-2"></i>Cotizaciones Recibidas</span>
+                <button class="btn btn-sm btn-light border" onclick="exportToCSV('cotizaciones')">Exportar</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Juan Pérez</td>
+                                <td>Drone</td>
+                                <td>2023-10-25</td>
+                                <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-info" title="Ver Detalle"><i class="fas fa-eye"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        console.log("Vista Cotizaciones");
+    </script>
+</body>
+</html>

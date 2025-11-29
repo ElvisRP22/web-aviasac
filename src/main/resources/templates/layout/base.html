@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout(content, title, links, scripts)">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title th:replace="${title}">Aviación Agrícola SAC</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/aviasac.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <th:block th:replace="${links} ?: ~{}"></th:block>
+</head>
+
+<body class="d-flex flex-column min-vh-100"> <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fas fa-plane me-2"></i>Aviación Agrícola SAC
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/servicios}">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/beneficios}">Beneficios</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/testimonios}">Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/nosotros}">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/contactanos}">Contáctanos</a></li>
+                    
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/auth/login}">
+                            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span th:text="${#authentication.name}">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" th:href="@{/perfil}"><i class="fas fa-user"></i> Perfil</a></li>
+
+                            <li sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                <a class="dropdown-item" th:href="@{/admin/dashboard}"><i class="fas fa-tools"></i> Panel Admin</a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow-1">
+        <div th:replace="${content}"></div>
+    </main>
+    <footer class="py-4 bg-dark mt-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="mb-3 text-white">Aviación Agrícola SAC</h5>
+                    <p class="text-light">Soluciones innovadoras de fumigación para el sector agrícola.</p>
+                </div>
+                <div class="col-md-2 mb-3 mb-md-0">
+                    <h5 class="mb-3 text-white">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/}" class="text-decoration-none text-light">Inicio</a></li>
+                        <li><a th:href="@{/servicios}" class="text-decoration-none text-light">Servicios</a></li>
+                        <li><a th:href="@{/contactanos}" class="text-decoration-none text-light">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <h5 class="mb-3 text-white">Servicios</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-decoration-none text-light">Fumigación con Drone</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Fumigación con Avioneta</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3 text-white">Contáctanos</h5>
+                    <ul class="list-unstyled text-light">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Piura, Perú</li>
+                        <li><i class="fas fa-envelope me-2"></i> aviasac@hotmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 text-light">&copy; 2025 Aviación Agrícola SAC.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
+        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/aviasac.js}"></script>
+
+    <th:block th:replace="${scripts}"></th:block>
+
+</body>
+</html>

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.PreguntaFrecuente;
-import com.aviasac.web_aviasac.respository.PreguntaFrecuenteRepository;
+import com.aviasac.web_aviasac.repository.PreguntaFrecuenteRepository;
 import com.aviasac.web_aviasac.services.PreguntaFrecuenteService;
 
 @Service

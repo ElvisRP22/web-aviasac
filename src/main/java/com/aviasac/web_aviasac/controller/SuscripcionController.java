@@ -28,12 +28,10 @@ public class SuscripcionController {
     @PostMapping("/suscribirse")
     @ResponseBody
     public ResponseEntity<?> suscribirse(@RequestParam String correo) {
-        // Verificar si el correo ya está suscrito
         if (suscripcionService.existsByEmail(correo)) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("success", false, "message", "Este correo ya está suscrito"));
         }
-        // Crear nuevo suscriptor
         Suscripcion suscriptor = new Suscripcion();
         suscriptor.setEmail(correo);
         suscriptor.setEstado(true);

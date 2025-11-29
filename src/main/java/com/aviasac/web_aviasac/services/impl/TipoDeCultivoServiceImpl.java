@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.TipoDeCultivo;
-import com.aviasac.web_aviasac.respository.TipoDeCultivoRepository;
+import com.aviasac.web_aviasac.repository.TipoDeCultivoRepository;
 import com.aviasac.web_aviasac.services.TipoDeCultivoService;
 
 @Service

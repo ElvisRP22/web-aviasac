@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.Rol;
 import com.aviasac.web_aviasac.model.Usuario;
-import com.aviasac.web_aviasac.respository.UsuarioRepository;
+import com.aviasac.web_aviasac.repository.UsuarioRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

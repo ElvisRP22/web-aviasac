@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.Solicitud;
-import com.aviasac.web_aviasac.respository.SolicitudRepository;
+import com.aviasac.web_aviasac.repository.SolicitudRepository;
 import com.aviasac.web_aviasac.services.SolicitudService;
 
 @Service

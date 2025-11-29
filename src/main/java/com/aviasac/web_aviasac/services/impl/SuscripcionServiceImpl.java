@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.Suscripcion;
-import com.aviasac.web_aviasac.respository.SuscripcionRepository;
+import com.aviasac.web_aviasac.repository.SuscripcionRepository;
 import com.aviasac.web_aviasac.services.SuscripcionService;
 
 @Service

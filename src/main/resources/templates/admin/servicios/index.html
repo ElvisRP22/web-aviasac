@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+
+<body>
+
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="fas fa-wrench me-2"></i>Gestión de Servicios
+                </span>
+                <div>
+                    <button class="btn btn-sm btn-outline-success me-2" onclick="exportToCSV('servicios')">
+                        <i class="fas fa-download me-1"></i> Exportar
+                    </button>
+                    <button class="btn btn-sm btn-primary" onclick="abrirModalNuevo()">
+                        <i class="fas fa-plus me-1"></i> Nuevo
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th class="text-end pe-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="servicio : ${servicios}">
+                                <td class="ps-4 fw-bold" th:text="${servicio.id}">1</td>
+                                <td th:text="${servicio.nombre}">Fumigación</td>
+
+                                <td th:text="${#strings.abbreviate(servicio.descripcion, 50)}">Desc...</td>
+
+                                <td>
+                                    <img th:if="${servicio.urlImagen}" th:src="@{'/uploads/' + ${servicio.urlImagen}}"
+                                        class="rounded border" style="width: 40px; height: 40px; object-fit: cover;">
+                                </td>
+
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-outline-warning me-1" onclick="editarServicio(this)"
+                                        th:data-id="${servicio.id}" th:data-nombre="${servicio.nombre}"
+                                        th:data-descripcion="${servicio.descripcion}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="servicioModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="servicioForm" enctype="multipart/form-data" method="post"
+                        th:action="@{/admin/servicios/guardar}">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Nuevo Servicio</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="servicioId">
+
+                            <div class="mb-3">
+                                <label for="servicioNombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="servicioNombre" name="nombre" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="servicioDesc" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="servicioDesc" name="descripcion"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Imagen</label>
+                                <input type="file" class="form-control" name="archivoImagen" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        $(document).ready(function () {
+            // 1. Inicializar Summernote
+            $('#servicioDesc').summernote({
+                placeholder: 'Escribe la descripción detallada del servicio...',
+                tabsize: 2,
+                height: 200, // Altura del editor
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link']], // Quitamos imagen/video para hacerlo más ligero
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+
+        // Función para abrir modal en modo "Nuevo"
+        function abrirModalNuevo() {
+            document.getElementById('servicioForm').reset();
+            document.getElementById('servicioId').value = '';
+            document.getElementById('modalTitle').innerText = 'Nuevo Servicio';
+
+            // Limpiar Summernote
+            $('#servicioDesc').summernote('code', '');
+
+            new bootstrap.Modal(document.getElementById('servicioModal')).show();
+        }
+
+        // Función para abrir modal en modo "Editar"
+        function editarServicio(btn) {
+            const id = btn.getAttribute('data-id');
+            const nombre = btn.getAttribute('data-nombre');
+            const desc = btn.getAttribute('data-descripcion');
+
+            document.getElementById('servicioId').value = id;
+            document.getElementById('servicioNombre').value = nombre;
+            document.getElementById('servicioEstado').value = estado;
+            document.getElementById('modalTitle').innerText = 'Editar Servicio';
+
+            // IMPORTANTE: Cargar datos en Summernote
+            $('#servicioDesc').summernote('code', desc);
+
+            new bootstrap.Modal(document.getElementById('servicioModal')).show();
+        }
+    </script>
+</body>
+
+</html>

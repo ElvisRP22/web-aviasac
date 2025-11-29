@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+<body>
+    <section>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-question-circle me-2"></i>Preguntas Frecuentes (FAQs)</span>
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#faqModal">
+                    <i class="fas fa-plus me-1"></i> Nueva
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Pregunta</th>
+                                <th>Respuesta</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="pf : ${faqs}"> <td th:text="${pf.id}"></td>
+                                <td th:text="${pf.pregunta}"></td>
+                                <td th:text="${#strings.abbreviate(pf.respuesta, 40)}"></td>
+                                <td>
+                                    <span class="badge" th:classappend="${pf.estado} ? 'bg-success' : 'bg-danger'"
+                                          th:text="${pf.estado} ? 'Activo' : 'Inactivo'"></span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning" onclick="editarFaq(this)"
+                                            th:data-id="${pf.id}" th:data-pregunta="${pf.pregunta}" 
+                                            th:data-respuesta="${pf.respuesta}" th:data-estado="${pf.estado}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="faqModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="faqForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Gestionar FAQ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="faqId">
+                            
+                            <div class="mb-3">
+                                <label for="faqPregunta" class="form-label">Pregunta</label>
+                                <input type="text" class="form-control" id="faqPregunta" name="pregunta" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="faqRespuesta" class="form-label">Respuesta</label>
+                                <textarea class="form-control" id="faqRespuesta" name="respuesta" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="faqEstado" class="form-label">Estado</label>
+                                <select class="form-select" id="faqEstado" name="estado">
+                                    <option value="true">Activo</option>
+                                    <option value="false">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function editarFaq(btn) {
+            // Lógica simple para llenar el modal
+            document.getElementById('faqId').value = btn.getAttribute('data-id');
+            document.getElementById('faqPregunta').value = btn.getAttribute('data-pregunta');
+            document.getElementById('faqRespuesta').value = btn.getAttribute('data-respuesta');
+            document.getElementById('faqEstado').value = btn.getAttribute('data-estado');
+            
+            new bootstrap.Modal(document.getElementById('faqModal')).show();
+        }
+    </script>
+</body>
+</html>

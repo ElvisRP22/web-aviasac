@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+<body>
+    <section>
+        <div class="header mb-4">
+            <h2>Dashboard de Administración</h2>
+            <p class="text-muted">Bienvenido al panel de control.</p>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white h-100">
+                    <div class="card-body text-center">
+                        <h3 class="display-4">5</h3>
+                        <div>Cotizaciones Nuevas</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body text-center">
+                        <h3 class="display-4">6</h3>
+                        <div>Suscriptores</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body text-center">
+                        <h3 class="display-4">4</h3>
+                        <div>Consultas</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-dark h-100">
+                    <div class="card-body text-center">
+                        <h3 class="display-4">4</h3>
+                        <div>Pendientes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-exclamation-circle me-2"></i>Acciones Requeridas</div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fas fa-clock text-warning me-2"></i> 2 Cotizaciones pendientes</li>
+                            <li class="list-group-item"><i class="fas fa-envelope text-primary me-2"></i> 3 Consultas sin responder</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-chart-bar me-2"></i>Resumen Mensual</div>
+                    <div class="card-body">
+                        <p class="text-center text-muted">Datos de satisfacción: 85%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        console.log("Dashboard cargado");
+    </script>
+</body>
+</html>

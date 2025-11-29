@@ -1,65 +1,75 @@
 package com.aviasac.web_aviasac.controller;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.aviasac.web_aviasac.services.PreguntaFrecuenteService;
 import com.aviasac.web_aviasac.services.ServicioService;
+import com.aviasac.web_aviasac.services.SolicitudService;
 import com.aviasac.web_aviasac.services.SuscripcionService;
+import com.aviasac.web_aviasac.services.TestimonioService;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
-    private final PreguntaFrecuenteService pFrecuenteService;
-    private final SuscripcionService suscripcionService;
-    private final ServicioService servicioService;
+    @Autowired
+    private ServicioService servicioService;
+    @Autowired
+    private SuscripcionService suscripcionService;
+    @Autowired
+    private PreguntaFrecuenteService pFrecuenteService;
+    @Autowired
+    private SolicitudService solicitudService;
+    @Autowired
+    private TestimonioService testimonioService;
 
-    public AdminController(
-            PreguntaFrecuenteService pFrecuenteService,
-            SuscripcionService suscripcionService,
-            ServicioService servicioService) {
-
-        this.pFrecuenteService = pFrecuenteService;
-        this.suscripcionService = suscripcionService;
-        this.servicioService = servicioService;
+    @GetMapping
+    public String index() {
+        return "redirect:/admin/dashboard";
     }
 
-    @GetMapping("/admin")
-    public String adminDashboard(Model model) {
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        model.addAttribute("activePage", "dashboard");
+        return "admin/dashboard";
+    }
 
-        model.addAttribute("titulo", "Panel de Administración | Aviación Agrícola SAC");
-        model.addAttribute("preguntasFrecuentes", pFrecuenteService.findAll());
-        model.addAttribute("suscriptores", suscripcionService.findAll());
+    @GetMapping("/servicios")
+    public String servicios(Model model) {
+        model.addAttribute("activePage", "servicios");
         model.addAttribute("servicios", servicioService.findAll());
-        return "admin";
+        return "admin/servicios/index";
     }
 
-    // Sección de cotizaciones
-    @GetMapping("/admin/cotizaciones")
+    @GetMapping("/cotizaciones")
     public String cotizaciones(Model model) {
-        model.addAttribute("titulo", "Gestión de Cotizaciones");
-        return "admin"; // reutiliza el mismo template (admin.html)
+        model.addAttribute("activePage", "cotizaciones");
+        model.addAttribute("solicitudes", solicitudService.findAll());
+        return "admin/cotizaciones/index";
     }
 
-    // Sección de newsletter
-    @GetMapping("/admin/newsletter")
+    @GetMapping("/faqs")
+    public String faqs(Model model) {
+        model.addAttribute("activePage", "faqs");
+        model.addAttribute("faqs", pFrecuenteService.findAll());
+        return "admin/faqs/index";
+    }
+
+    @GetMapping("/newsletter")
     public String newsletter(Model model) {
-        model.addAttribute("titulo", "Suscriptores del Newsletter");
-        return "admin";
+        model.addAttribute("activePage", "newsletter");
+        model.addAttribute("suscriptores", suscripcionService.findAll());
+
+        return "admin/newsletter/index";
     }
 
-    // Sección de contactos
-    @GetMapping("/admin/contactos")
-    public String contactos(Model model) {
-        model.addAttribute("titulo", "Consultas de Contacto");
-        return "admin";
-    }
+    @GetMapping("/testimonios")
+    public String testimonios(Model model){
+        model.addAttribute("activePage", "testimonios");
+        model.addAttribute("testimonios", testimonioService.findAll());
 
-    // Sección de reportes
-    @GetMapping("/admin/reportes")
-    public String reportes(Model model) {
-        model.addAttribute("titulo", "Reportes y Estadísticas");
-        return "admin";
+        return "admin/testimonios/index";
     }
-
 }

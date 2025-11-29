@@ -66,3 +66,75 @@ document.addEventListener('DOMContentLoaded', function () {
         form.style.display = 'none';
     });
 });
+
+function abrirModalCotizacion(boton) {
+    const idServicio = boton.getAttribute('data-id');
+    const nombreServicio = boton.getAttribute('data-nombre');
+    document.getElementById('modal-servicio-id').value = idServicio;
+    document.getElementById('modal-servicio-nombre-display').textContent = nombreServicio;
+
+    const divPista = document.getElementById('campo-pista-aterrizaje');
+    const selectPista = document.getElementById('input-pista');
+
+    if (nombreServicio.toLowerCase().includes('avioneta')) {
+        divPista.style.display = 'block';
+        selectPista.setAttribute('required', 'required');
+    } else {
+        divPista.style.display = 'none';
+        selectPista.removeAttribute('required');
+        selectPista.value = "";
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('cotizacionModal'));
+    modal.show();
+}
+
+document.getElementById('cotizacionModal').addEventListener('submit', function(e) {
+    e.preventDefault(); 
+
+    const form = this;
+    const formData = new FormData(form);
+
+    form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+    form.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+
+    fetch('/solicitudes/guardar', { 
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.status === 401) {
+            window.location.href = '/auth/login';
+            return null;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data) return;
+
+        if (data.status === 'success') {
+            const modalEl = document.getElementById('cotizacionModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+            form.reset();
+            
+            alert(data.message); 
+
+        } else if (data.status === 'error' && data.errors) {
+            for (const [campo, mensaje] of Object.entries(data.errors)) {
+                const input = form.querySelector(`[name="${campo}"]`);
+                if (input) {
+                    input.classList.add('is-invalid');
+                    
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'invalid-feedback';
+                    errorDiv.innerText = mensaje;
+                    input.parentNode.appendChild(errorDiv);
+                }
+            }
+        } else {
+            alert(data.message || 'Ocurrió un error inesperado');
+        }
+    })
+    .catch(error => console.error('Error de red:', error));
+});

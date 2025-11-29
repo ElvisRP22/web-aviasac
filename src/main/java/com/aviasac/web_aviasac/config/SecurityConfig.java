@@ -19,39 +19,39 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http
-                                .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                                                .permitAll()
-                                                .requestMatchers("/img/**", "/uploads/**").permitAll()
-                                                .requestMatchers(
-                                                                "/auth/registro",
-                                                                "/auth/login",
-                                                                "/",
-                                                                "/servicios",
-                                                                "/servicios/**",
-                                                                "/beneficios",
-                                                                "/beneficios/**",
-                                                                "/testimonios",
-                                                                "/nosotros",
-                                                                "/contactanos",
-                                                                "/contacto/enviar",
-                                                                "/newsletter/suscribirse")
-                                                .permitAll()
+                http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                        .permitAll()
+                        .requestMatchers("/img/**", "/uploads/**").permitAll()
+                        .requestMatchers(
+                                "/auth/registro",
+                                "/auth/login",
+                                "/",
+                                "/servicios",
+                                "/servicios/**",
+                                "/beneficios",
+                                "/beneficios/**",
+                                "/testimonios",
+                                "/nosotros",
+                                "/contactanos",
+                                "/contacto/enviar",
+                                "/newsletter/suscribirse",
+                                "/error"
+                                ).permitAll()
 
-                                                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                                                .requestMatchers("/servicios/guardar").hasAuthority("ROLE_ADMIN")
-                                                .anyRequest().authenticated())
-                                .formLogin(form -> form
-                                                .loginPage("/auth/login")
-                                                .successHandler(customLoginSuccessHandler)
-                                                .permitAll())
-                                .logout(logout -> logout
-                                                .logoutUrl("/logout")
-                                                .logoutSuccessUrl("/auth/login?logout")
-                                                .permitAll());
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/solicitudes/guardar").authenticated()
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .successHandler(customLoginSuccessHandler)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/auth/login?logout")
+                        .permitAll());
 
-                return http.build();
+        return http.build();
         }
 
         @Bean

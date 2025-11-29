@@ -1,19 +1,12 @@
 package com.aviasac.web_aviasac.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import lombok.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "testimonios")
@@ -31,7 +24,20 @@ public class Testimonio {
     private Usuario usuario;
 
     @NotBlank(message = "La descripción es obligatoria")
-    @Size(min = 10, max = 255, message = "La descripción debe tener entre {min} y {max} caracteres")
-    @Column(name = "descripcion", length = 255, nullable = false)
-    private String descripcion;
+    @Size(min = 10, max = 255, message = "La descripción debe ser breve")
+    @Column(name = "comentario", length = 255, nullable = false)
+    private String comentario;
+    
+    @Min(1) @Max(5)
+    @Column(name = "calificacion")
+    private Integer calificacion;
+
+    @Column(name = "fecha")
+    private LocalDate fecha;
+
+    @PrePersist
+    public void prePersist() {
+        this.fecha = LocalDate.now();
+        if(this.calificacion == null) this.calificacion = 5;
+    }
 }

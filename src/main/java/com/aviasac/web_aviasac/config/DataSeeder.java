@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.aviasac.web_aviasac.model.Rol;
 import com.aviasac.web_aviasac.model.Usuario;
-import com.aviasac.web_aviasac.respository.RolRepository;
-import com.aviasac.web_aviasac.respository.UsuarioRepository;
+import com.aviasac.web_aviasac.repository.RolRepository;
+import com.aviasac.web_aviasac.repository.UsuarioRepository;
 
 @Component
 public class DataSeeder implements CommandLineRunner {

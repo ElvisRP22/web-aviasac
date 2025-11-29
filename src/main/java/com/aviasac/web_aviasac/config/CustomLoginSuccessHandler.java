@@ -23,7 +23,7 @@ public class CustomLoginSuccessHandler  implements AuthenticationSuccessHandler 
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        String redirectUrl = "/"; // default
+        String redirectUrl = "/";
 
         for (GrantedAuthority authority : authorities) {
             String role = authority.getAuthority();
@@ -31,7 +31,7 @@ public class CustomLoginSuccessHandler  implements AuthenticationSuccessHandler 
                 redirectUrl = "/admin";
                 break;
             } else if (role.equals("ROLE_USER")) {
-                redirectUrl = "/perfil"; // o cualquier ruta para usuarios
+                redirectUrl = "/perfil";
                 break;
             }
         }

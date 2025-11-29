@@ -1,4 +1,4 @@
-package com.aviasac.web_aviasac.respository;
+package com.aviasac.web_aviasac.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

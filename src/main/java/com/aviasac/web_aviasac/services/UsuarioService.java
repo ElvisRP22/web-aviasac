@@ -10,4 +10,5 @@ public interface UsuarioService {
     Optional<Usuario> findById(Integer id);
     Usuario save(Usuario usuario);
     void deleteById(Integer id);
+    Usuario buscarPorUsername(String username);
 }

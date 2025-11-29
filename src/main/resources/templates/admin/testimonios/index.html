@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+<body>
+    
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-muted">Opiniones de Clientes</h4>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="fas fa-comments me-2"></i>Testimonios Recibidos
+                </span>
+                <button class="btn btn-sm btn-outline-success" onclick="exportToCSV('testimonios')">
+                    <i class="fas fa-file-csv me-1"></i> Exportar
+                </button>
+            </div>
+            
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">ID</th>
+                                <th>Cliente</th>
+                                <th>Calificación</th>
+                                <th style="width: 40%;">Comentario</th>
+                                <th>Fecha</th>
+                                <th class="text-end pe-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="t : ${testimonios}">
+                                <td class="ps-4 fw-bold" th:text="${t.id}">1</td>
+                                
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-2" 
+                                             style="width: 35px; height: 35px; font-size: 0.8rem;">
+                                            <span th:text="${#strings.substring(t.usuario.nombre, 0, 1)}">J</span>
+                                        </div>
+                                        <div>
+                                            <span class="d-block fw-bold" th:text="${t.usuario.nombre}">Juan</span>
+                                            <small class="text-muted" th:text="${t.usuario.email}">email@test.com</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                                <td>
+                                    <div class="text-warning small">
+                                        <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, t.calificacion)}"></i>
+                                        <i class="far fa-star text-muted" th:if="${t.calificacion < 5}" 
+                                           th:each="i : ${#numbers.sequence(t.calificacion + 1, 5)}"></i>
+                                        <span class="text-dark ms-1" th:text="'(' + ${t.calificacion} + ')'"></span>
+                                    </div>
+                                </td>
+                                
+                                <td>
+                                    <span th:text="${#strings.length(t.comentario) > 60} ? ${#strings.substring(t.comentario, 0, 60)} + '...' : ${t.comentario}"
+                                          class="text-secondary fst-italic"
+                                          data-bs-toggle="tooltip" 
+                                          th:title="${t.comentario}">
+                                    </span>
+                                </td>
+                                
+                                <td th:text="${#temporals.format(t.fecha, 'dd/MM/yyyy')}">01/01/2025</td>
+                                
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-outline-info me-1" 
+                                            th:onclick="'verDetalleTestimonio(\'' + ${t.usuario.nombre} + '\', \'' + ${t.comentario} + '\')'">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    
+                                    <button class="btn btn-sm btn-outline-danger" 
+                                            th:onclick="'confirmarEliminarTestimonio(' + ${t.id} + ')'">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <tr th:if="${#lists.isEmpty(testimonios)}">
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="far fa-comment-dots fa-3x mb-3 d-block"></i>
+                                    No hay testimonios registrados aún.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalVerTestimonio" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detalleTitulo">Opinión de Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="fst-italic fs-5 text-center" id="detalleComentario"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        function verDetalleTestimonio(nombre, comentario) {
+            document.getElementById('detalleTitulo').innerText = 'Opinión de ' + nombre;
+            document.getElementById('detalleComentario').innerText = '“' + comentario + '”';
+            new bootstrap.Modal(document.getElementById('modalVerTestimonio')).show();
+        }
+
+        function confirmarEliminarTestimonio(id) {
+            if (confirm('¿Estás seguro de eliminar este testimonio? Esta acción es irreversible.')) {
+                // Lógica de eliminación (Fetch a tu controller)
+                // location.href = '/admin/testimonios/eliminar/' + id;
+                console.log("Eliminando testimonio ID: " + id);
+                alert("Simulación: Testimonio " + id + " eliminado.");
+            }
+        }
+    </script>
+</body>
+</html>

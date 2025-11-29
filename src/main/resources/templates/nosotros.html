@@ -1,139 +1,121 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::main}, ~{::title},~{::link}, ~{::script})}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/nosotros.css}">
-    <!-- link Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <title>Nosotros | Aviacion Agrícola S.A.C</title>
+    <link rel="stylesheet" th:href="@{/css/nosotros.css}">
 </head>
 
 <body>
 
-    <div th:replace="fragments/base :: navbar"></div>
-
-    <!-- Seccion Sobre Nosotros -->
-    <section class="about-section py-5" id="nosotros">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <img th:src="@{/img/avioneta2.jpg}" alt="Sobre Nosotros" class="img-fluid rounded shadow">
-                </div>
-                <div class="col-lg-6">
-                    <h2 class="fw-bold mb-4">Sobre Aviación Agrícola SAC</h2>
-                    <p>Somos una empresa líder en el sector de la fumigación agrícola, con más de 15 años de experiencia
-                        brindando soluciones efectivas para el control de plagas y enfermedades en cultivos de todo
-                        tipo.</p>
-                    <p>Nuestra misión es contribuir al desarrollo sostenible del sector agrícola, ofreciendo servicios
-                        de fumigación de alta calidad que incrementen la productividad de nuestros clientes mientras
-                        protegen el medio ambiente.</p>
-                    <p>Contamos con un equipo de profesionales altamente capacitados y una flota moderna de avionetas y
-                        drones equipados con la más avanzada tecnología para garantizar resultados óptimos en cada
-                        servicio.</p>
-                    <div class="row mt-4">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center mb-3">
-                                <i class="fas fa-user-tie text-success me-3" style="font-size: 2rem;"></i>
-                                <div>
-                                    <h5 class="mb-0">Personal Calificado</h5>
-                                    <p class="mb-0 text-muted">Expertos en agronomía</p>
+    <main>
+        
+        <section class="about-section py-5" id="nosotros">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <img th:src="@{/img/avioneta2.jpg}" alt="Sobre Nosotros" class="img-fluid rounded shadow">
+                    </div>
+                    <div class="col-lg-6">
+                        <h2 class="fw-bold mb-4">Sobre Aviación Agrícola SAC</h2>
+                        <p>Somos una empresa líder en el sector de la fumigación agrícola, con más de 15 años de experiencia
+                            brindando soluciones efectivas para el control de plagas y enfermedades en cultivos de todo
+                            tipo.</p>
+                        <p>Nuestra misión es contribuir al desarrollo sostenible del sector agrícola, ofreciendo servicios
+                            de fumigación de alta calidad que incrementen la productividad de nuestros clientes mientras
+                            protegen el medio ambiente.</p>
+                        <p>Contamos con un equipo de profesionales altamente capacitados y una flota moderna de avionetas y
+                            drones equipados con la más avanzada tecnología para garantizar resultados óptimos en cada
+                            servicio.</p>
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-user-tie text-success me-3" style="font-size: 2rem;"></i>
+                                    <div>
+                                        <h5 class="mb-0">Personal Calificado</h5>
+                                        <p class="mb-0 text-muted">Expertos en agronomía</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center mb-3">
-                                <i class="fas fa-medal text-success me-3" style="font-size: 2rem;"></i>
-                                <div>
-                                    <h5 class="mb-0">Certificaciones</h5>
-                                    <p class="mb-0 text-muted">Estándares internacionales</p>
+                            <div class="col-sm-6">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-medal text-success me-3" style="font-size: 2rem;"></i>
+                                    <div>
+                                        <h5 class="mb-0">Certificaciones</h5>
+                                        <p class="mb-0 text-muted">Estándares internacionales</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
+        <section id="historia" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5 cursive-text">Nuestra Historia - Aviación Agrícola S.A.C</h2>
 
-    <!-- Nuestra Historia -->
-    <section id="historia" class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5 cursive-text">Nuestra Historia - Aviación Agrícola S.A.C</h2>
+                <div class="timeline-container">
 
-            <div class="timeline-container">
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content timeline-left shadow">
-                        <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
-                        <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
-                        </p>
-                        <div class="text-center mt-3">
-                            <img th:src="@{/img/dron.jpg}" alt="" class="img-fluid rounded">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content timeline-left shadow">
+                            <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
+                            <p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
+                            </p>
+                            <div class="text-center mt-3">
+                                <img th:src="@{/img/dron.jpg}" alt="" class="img-fluid rounded">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content timeline-right shadow">
-                        <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
-                        <p>
-                            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
-                        </p>
-                        <div class="text-center mt-3">
-                            <img th:src="@{/img/avioneta2.jpg}" alt="" class="img-fluid rounded">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content timeline-right shadow">
+                            <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
+                            <p>
+                                Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
+                            </p>
+                            <div class="text-center mt-3">
+                                <img th:src="@{/img/avioneta2.jpg}" alt="" class="img-fluid rounded">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content timeline-left shadow">
-                        <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
-                        <p>
-                            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
-                        </p>
-                        <div class="text-center mt-3">
-                            <img th:src="@{/img/dron.jpg}" alt="" class="img-fluid rounded">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content timeline-left shadow">
+                            <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
+                            <p>
+                                Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
+                            </p>
+                            <div class="text-center mt-3">
+                                <img th:src="@{/img/dron.jpg}" alt="" class="img-fluid rounded">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content timeline-right shadow">
-                        <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
-                        <p>
-                            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
-                        </p>
-                        <div class="text-center mt-3">
-                            <img th:src="@{/img/avioneta2.jpg}" alt="" class="img-fluid rounded">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content timeline-right shadow">
+                            <h3 class="cursive-text text-center mb-3">2005 - Inicios de Aviación Agrícola S.A.C</h3>
+                            <p>
+                                Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
+                            </p>
+                            <div class="text-center mt-3">
+                                <img th:src="@{/img/avioneta2.jpg}" alt="" class="img-fluid rounded">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+        
+    </main>
 
-    <div th:replace="fragments/base :: footer"></div>
-
-    <!-- Botón flotante WhatsApp -->
-    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
-        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JavaScript Personalizado-->
     <script th:src="@{/js/nosotros.js}"></script>
 
 </body>
-
 </html>

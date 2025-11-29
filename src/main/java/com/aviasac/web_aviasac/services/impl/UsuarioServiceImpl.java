@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.Usuario;
-import com.aviasac.web_aviasac.respository.RolRepository;
-import com.aviasac.web_aviasac.respository.UsuarioRepository;
+import com.aviasac.web_aviasac.repository.RolRepository;
+import com.aviasac.web_aviasac.repository.UsuarioRepository;
 import com.aviasac.web_aviasac.services.UsuarioService;
 
 @Service
@@ -51,5 +51,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void deleteById(Integer id) {
         repo.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Usuario buscarPorUsername(String username) {
+        return repo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con username: " + username));
     }
 }

@@ -1,4 +1,4 @@
-package com.aviasac.web_aviasac.respository;
+package com.aviasac.web_aviasac.repository;
 
 import java.util.List;
 

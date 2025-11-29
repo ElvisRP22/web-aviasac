@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.Empresa;
-import com.aviasac.web_aviasac.respository.EmpresaRepository;
+import com.aviasac.web_aviasac.repository.EmpresaRepository;
 import com.aviasac.web_aviasac.services.EmpresaService;
 
 @Service

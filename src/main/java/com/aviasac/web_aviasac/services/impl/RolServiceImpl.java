@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.Rol;
-import com.aviasac.web_aviasac.respository.RolRepository;
+import com.aviasac.web_aviasac.repository.RolRepository;
 import com.aviasac.web_aviasac.services.RolService;
 
 @Service

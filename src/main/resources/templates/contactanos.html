@@ -1,159 +1,134 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::main}, ~{::title},~{::link}, ~{::script})}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>Contáctanos | Aviacion Agrícola S.A.C</title>
+    
     <link rel="stylesheet" th:href="@{/css/contactanos.css}">
-    <!-- link Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <title>Contactanos | Aviacion Agrícola S.A.C</title>
 </head>
 
 <body>
-    <div th:replace="fragments/base :: navbar"></div>
 
-    <!-- Seccion Contacto -->
-    <section class="py-5" id="contacto">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Contáctanos</h2>
-                <p class="text-muted">Estamos aquí para responder tus consultas y brindarte la mejor atención</p>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="contact-form">
-                        <form id="contactForm" method="POST" th:action="@{/contacto/enviar}">
-                            <div class="mb-3">
-                                <label class="form-label">RUC</label>
-                                <input type="text" class="form-control" name="ruc" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Razón Social</label>
-                                <input type="text" class="form-control" name="razonSocial" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Representante legal</label>
-                                <input type="text" class="form-control" name="representante" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" name="email" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Teléfono</label>
-                                <input type="tel" class="form-control" name="telefono">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Asunto</label>
-                                <input type="text" class="form-control" name="asunto" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Mensaje</label>
-                                <textarea class="form-control" name="mensaje" rows="5" required></textarea>
-                            </div>
-
-                            <button type="submit" class="btn btn-success w-100">Enviar Mensaje</button>
-                        </form>
-                        <div id="alertContainer"></div>
-
-
-                    </div>
+    <main>
+        <section class="py-5" id="contacto">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Contáctanos</h2>
+                    <p class="text-muted">Estamos aquí para responder tus consultas y brindarte la mejor atención</p>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="card shadow h-100">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Información de Contacto</h4>
-
-                            <div class="d-flex mb-4">
-                                <i class="fas fa-map-marker-alt text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
-                                <div>
-                                    <h5>Dirección</h5>
-                                    <p>Urb. Miraflores II Etapa Mza Z lote 12, Piura, Perú</p>
+                <div class="row">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <div class="contact-form">
+                            <form id="contactForm" method="POST" th:action="@{/contacto/enviar}">
+                                <div class="mb-3">
+                                    <label class="form-label">RUC</label>
+                                    <input type="text" class="form-control" name="ruc" required>
                                 </div>
-                            </div>
 
-                            <div class="d-flex mb-4">
-                                <i class="fas fa-phone-alt text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
-                                <div>
-                                    <h5>Teléfono</h5>
-                                    <p>(+51) 932 832 985</p>
+                                <div class="mb-3">
+                                    <label class="form-label">Razón Social</label>
+                                    <input type="text" class="form-control" name="razonSocial" required>
                                 </div>
-                            </div>
 
-                            <div class="d-flex mb-4">
-                                <i class="fas fa-envelope text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
-                                <div>
-                                    <h5>Correo Electrónico</h5>
-                                    <p>aviasac@hotmail.com</p>
+                                <div class="mb-3">
+                                    <label class="form-label">Representante legal</label>
+                                    <input type="text" class="form-control" name="representante" required>
                                 </div>
-                            </div>
 
-                            <div class="d-flex mb-4">
-                                <i class="fas fa-clock text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
-                                <div>
-                                    <h5>Horario de Atención</h5>
-                                    <p>Lunes a Viernes: 8:00 AM - 6:00 PM<br>Sábados: 9:00 AM - 1:00 PM</p>
+                                <div class="mb-3">
+                                    <label class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" name="email" required>
                                 </div>
-                            </div>
 
-                            <!-- Mapa integrado -->
-                            <div class="mb-4">
-                                <h5>Ubicación</h5>
-                                <div class="ratio ratio-16x9">
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.2!2d-80.6324!3d-5.1945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x904a10f84b329321%3A0x5d6c9d8b1a234567!2sPiura%2C%20Peru!5e0!3m2!1sen!2spe!4v1693123456789!5m2!1sen!2spe"
-                                        style="border:0;" allowfullscreen="" loading="lazy"
-                                        referrerpolicy="no-referrer-when-downgrade">
-                                    </iframe>
+                                <div class="mb-3">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" name="telefono">
                                 </div>
-                            </div>
 
-                            <div class="social-media">
-                                <h5>Síguenos en:</h5>
-                                <div class="d-flex mt-3">
-                                    <a href="https://facebook.com/aviasac" target="_blank" class="text-dark me-3"
-                                        style="font-size: 1.8rem;"><i class="fab fa-facebook"></i></a>
-                                    <a href="https://instagram.com/aviasac" target="_blank" class="text-dark me-3"
-                                        style="font-size: 1.8rem;"><i class="fab fa-instagram"></i></a>
-                                    <a href="https://twitter.com/aviasac" target="_blank" class="text-dark me-3"
-                                        style="font-size: 1.8rem;"><i class="fab fa-twitter"></i></a>
-                                    <a href="https://linkedin.com/company/aviasac" target="_blank"
-                                        class="text-dark me-3" style="font-size: 1.8rem;"><i
-                                            class="fab fa-linkedin"></i></a>
+                                <div class="mb-3">
+                                    <label class="form-label">Asunto</label>
+                                    <input type="text" class="form-control" name="asunto" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Mensaje</label>
+                                    <textarea class="form-control" name="mensaje" rows="5" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-success w-100">Enviar Mensaje</button>
+                            </form>
+                            <div id="alertContainer"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card shadow h-100">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Información de Contacto</h4>
+
+                                <div class="d-flex mb-4">
+                                    <i class="fas fa-map-marker-alt text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h5>Dirección</h5>
+                                        <p>Urb. Miraflores II Etapa Mza Z lote 12, Piura, Perú</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mb-4">
+                                    <i class="fas fa-phone-alt text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h5>Teléfono</h5>
+                                        <p>(+51) 932 832 985</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mb-4">
+                                    <i class="fas fa-envelope text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h5>Correo Electrónico</h5>
+                                        <p>aviasac@hotmail.com</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mb-4">
+                                    <i class="fas fa-clock text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h5>Horario de Atención</h5>
+                                        <p>Lunes a Viernes: 8:00 AM - 6:00 PM<br>Sábados: 9:00 AM - 1:00 PM</p>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h5>Ubicación</h5>
+                                    <div class="ratio ratio-16x9">
+                                        <iframe
+                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3973.2!2d-80.6324!3d-5.1945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x904a10f84b329321%3A0x5d6c9d8b1a234567!2sPiura%2C%20Peru!5e0!3m2!1sen!2spe!4v1693123456789!5m2!1sen!2spe"
+                                            style="border:0;" allowfullscreen="" loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </div>
+                                </div>
+
+                                <div class="social-media">
+                                    <h5>Síguenos en:</h5>
+                                    <div class="d-flex mt-3">
+                                        <a href="https://facebook.com/aviasac" target="_blank" class="text-dark me-3" style="font-size: 1.8rem;"><i class="fab fa-facebook"></i></a>
+                                        <a href="https://instagram.com/aviasac" target="_blank" class="text-dark me-3" style="font-size: 1.8rem;"><i class="fab fa-instagram"></i></a>
+                                        <a href="https://twitter.com/aviasac" target="_blank" class="text-dark me-3" style="font-size: 1.8rem;"><i class="fab fa-twitter"></i></a>
+                                        <a href="https://linkedin.com/company/aviasac" target="_blank" class="text-dark me-3" style="font-size: 1.8rem;"><i class="fab fa-linkedin"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <div th:replace="fragments/base :: footer"></div>
-
-    <!-- Botón flotante WhatsApp -->
-    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
-        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JavaScript Personalizado-->
     <script th:src="@{/js/contactanos.js}"></script>
 
 </body>
-
 </html>

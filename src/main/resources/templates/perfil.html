@@ -1,116 +1,149 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::main}, ~{::title},~{::link}, ~{::script})}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - Aviación Agrícola SAC</title>
-    <!-- Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Mi Perfil | Aviación Agrícola SAC</title>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <div th:replace="fragments/base :: navbar"></div>
+    <main class="bg-light">
+        
+        <div class="container mt-3" th:if="${mensaje != null || error != null}">
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show">
+                <i class="fas fa-check-circle me-2"></i><span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
 
-    <!-- Perfil -->
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-lg border-0 rounded-4">
-                    <div class="card-body text-center p-5">
-                        <img src="https://thumbs.dreamstime.com/b/l%C3%ADnea-icono-del-negro-avatar-perfil-de-usuario-121102131.jpg"
-                            class="rounded-circle mb-3 border border-3 border-success w-25 h-25" alt="Foto de perfil">
-                        <h3 class="fw-bold" th:text="${#authentication.name}">Stephano Benites</h3>
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="#" class="btn btn-outline-success" data-bs-toggle="modal"
-                                data-bs-target="#editarPerfilModal">
-                                <i class="fas fa-edit me-2"></i>Editar Perfil
-                            </a>
-                            <form th:action="@{/logout}" method="post">
-                                <button type="submit" class="btn btn-danger logout-btn">
-                                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card shadow-lg border-0 rounded-4">
+                        <div class="card-body text-center p-5">
+                            
+                            <img src="https://thumbs.dreamstime.com/b/l%C3%ADnea-icono-del-negro-avatar-perfil-de-usuario-121102131.jpg"
+                                 class="rounded-circle mb-3 border border-3 border-success" 
+                                 style="width: 150px; height: 150px; object-fit: cover;" 
+                                 alt="Foto de perfil">
+                            
+                            <h3 class="fw-bold" th:text="${usuario.nombre}">Nombre Usuario</h3>
+                            <p class="text-muted" th:text="${usuario.email}">email@ejemplo.com</p>
+
+                            <div class="d-flex justify-content-center gap-3">
+                                <button class="btn btn-outline-success" onclick="abrirModalEditar()">
+                                    <i class="fas fa-edit me-2"></i>Editar Perfil
                                 </button>
-                            </form>
+                                
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" class="btn btn-danger logout-btn">
+                                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                    </button>
+                                </form>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="text-start">
+                                <h5 class="fw-bold mb-3">Información Personal</h5>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-user me-2 text-secondary" style="width: 20px;"></i>
+                                        <strong>Nombre:</strong> <span th:text="${usuario.nombre}"></span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-phone me-2 text-secondary" style="width: 20px;"></i>
+                                        <strong>Teléfono:</strong> <span th:text="${usuario.telefono != null} ? ${usuario.telefono} : 'No registrado'"></span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="text-start mt-4">
+                                <h5 class="fw-bold mb-3">Historial de Actividad</h5>
+                                
+                                <div th:if="${#lists.isEmpty(usuario.solicitudes)}" class="alert alert-light border text-center">
+                                    <small class="text-muted">Aún no has realizado ninguna solicitud.</small>
+                                    <br>
+                                    <a th:href="@{/servicios}" class="btn btn-sm btn-link">Ver Servicios</a>
+                                </div>
+
+                                <ul class="list-group list-group-flush" th:unless="${#lists.isEmpty(usuario.solicitudes)}">
+                                    <li class="list-group-item px-0 py-3" th:each="solicitud : ${usuario.solicitudes}">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="fas fa-file-contract fa-2x text-primary"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-0 fw-bold" th:text="${solicitud.servicio.nombre}">Servicio</h6>
+                                                <small class="text-muted">
+                                                    Solicitado el: <span th:text="${#temporals.format(solicitud.fechaSolicitud, 'dd/MM/yyyy')}"></span>
+                                                </small>
+                                            </div>
+                                            <div>
+                                                <span class="badge rounded-pill"
+                                                      th:classappend="${solicitud.estado.name() == 'PENDIENTE'} ? 'bg-warning text-dark' : 'bg-success'"
+                                                      th:text="${solicitud.estado}">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
                         </div>
-
-                        <hr class="my-4">
-
-                        <div class="text-start">
-                            <h5 class="fw-bold">Información Personal</h5>
-                            <ul class="list-unstyled">
-                                <li><i class="fas fa-user me-2"></i><strong>Nombre:</strong> Stephano Benites</li>
-                                <li><i class="fas fa-phone me-2"></i><strong>Teléfono:</strong> +51 999 888 777</li>
-                                <li><i class="fas fa-map-marker-alt me-2"></i><strong>Dirección:</strong> Piura, Perú
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="text-start mt-4">
-                            <h5 class="fw-bold">Historial de Actividad</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Último
-                                    inicio de sesión:
-                                    04/09/2025</li>
-                                <li class="list-group-item"><i class="fas fa-file-alt text-primary me-2"></i>Solicitó
-                                    una cotización el
-                                    28/08/2025</li>
-                                <li class="list-group-item"><i class="fas fa-comment text-warning me-2"></i>Dejó un
-                                    testimonio el
-                                    15/08/2025</li>
-                            </ul>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal Editar Perfil -->
-    <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-labelledby="editarPerfilLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-4 shadow">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="editarPerfilLabel"><i class="fas fa-user-edit me-2"></i>Editar Perfil
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre completo</label>
-                            <input type="text" class="form-control" id="nombre" value="Stephano Benites">
+        <div class="modal fade" id="editarPerfilModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 shadow">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title"><i class="fas fa-user-edit me-2"></i>Editar Perfil</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    
+                    <form th:action="@{/perfil/actualizar}" method="post">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="inputNombre" class="form-label">Nombre completo</label>
+                                <input type="text" class="form-control" id="inputNombre" name="nombre" 
+                                       th:value="${usuario.nombre}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputTelefono" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" id="inputTelefono" name="telefono" 
+                                       th:value="${usuario.telefono}" pattern="[0-9]{9}" title="Debe tener 9 dígitos">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Correo electrónico</label>
+                                <input type="email" class="form-control bg-light" th:value="${usuario.email}" disabled>
+                                <small class="text-muted"><i class="fas fa-lock me-1"></i>No editable</small>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="telefono" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="telefono" value="+51 999 888 777">
-                        </div>
-                        <div class="mb-3">
-                            <label for="direccion" class="form-label">Dirección</label>
-                            <input type="text" class="form-control" id="direccion" value="Piura, Perú">
-                        </div>
-                        <div class="mb-3">
-                            <label for="correo" class="form-label">Correo electrónico</label>
-                            <input type="email" class="form-control" id="correo" value="usuario@aviasac.com" disabled>
-                            <small class="text-muted">El correo no se puede cambiar</small>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success">Guardar Cambios</button>
-                </div>
             </div>
         </div>
-    </div>
 
+    </main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function abrirModalEditar() {
+            var myModal = new bootstrap.Modal(document.getElementById('editarPerfilModal'));
+            myModal.show();
+        }
+    </script>
 
 </body>
-
 </html>

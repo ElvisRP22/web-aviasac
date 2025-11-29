@@ -1,94 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::main}, ~{::title},~{::link}, ~{::script})}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-    <title>Aviación Agrícola SAC - Servicios de Fumigación</title>
-    <!-- Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/aviasac.css}">
-    <!-- link Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
+    <title>Inicio | Aviación Agrícola SAC</title>
+    <link rel="stylesheet" th:href="@{/css/aviasac.css}"
 </head>
 
 <body>
-    <div th:replace="fragments/base :: navbar"></div>
 
-    <!-- Hero -->
-    <section class="hero-section" id="inicio">
-        <div class="container text-center">
-            <h1 class="display-3 fw-bold">Aviación Agrícola SAC</h1>
-            <p class="lead">Soluciones innovadoras de fumigación para el sector agrícola</p>
-            <div class="mt-4">
-                <a href="/servicios" class="btn btn-success btn-lg me-2">Nuestros Servicios</a>
-                <a href="/contactanos" class="btn btn-outline-light btn-lg">Contactar</a>
-                <!-- botón descargar -->
-                <a href="" id="descargarFolleto" class="btn btn-warning btn-lg ms-2">
-                    <i class="fas fa-download"></i> Descargar Folleto
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Newsletter -->
-    <section class="py-5 bg-white text-dark">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h3 class="fw-bold">Mantente Informado</h3>
-                    <p class="mb-0">Suscríbete a nuestro boletín para recibir novedades, consejos agrícolas y ofertas
-                        especiales.</p>
-                </div>
-                <div class="col-lg-6">
-                    <form id="newsletterForm" class="d-flex gap-2">
-                        <input type="email" class="form-control" placeholder="Tu correo electrónico"
-                            id="newsletterEmail" required>
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-paper-plane me-1"></i>Suscribirse
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div id="newsletterToast"
-            class="toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 m-3"
-            role="alert" aria-live="assertive" aria-atomic="true" style="display: none; z-index: 9999;">
-            <div class="d-flex">
-                <div class="toast-body" id="newsletterToastMessage">
+    <main>
+        
+        <section class="hero-section" id="inicio">
+            <div class="container text-center">
+                <h1 class="display-3 fw-bold">Aviación Agrícola SAC</h1>
+                <p class="lead">Soluciones innovadoras de fumigación para el sector agrícola</p>
+                <div class="mt-4">
+                    <a th:href="@{/servicios}" class="btn btn-success btn-lg me-2">Nuestros Servicios</a>
+                    <a th:href="@{/contactanos}" class="btn btn-outline-light btn-lg">Contactar</a>
                     
+                    <a href="#" id="descargarFolleto" class="btn btn-warning btn-lg ms-2">
+                        <i class="fas fa-download"></i> Descargar Folleto
+                    </a>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="ocultarToast()"
-                    aria-label="Cerrar"></button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CTA Section -->
-    <section class="bg-success py-5 text-white">
-        <div class="container text-center">
-            <h2 class="fw-bold">¿Listo para mejorar la salud de tus cultivos?</h2>
-            <p class="lead">Contáctanos hoy mismo y recibe una cotización personalizada para tus necesidades</p>
-            <a href="/contactanos" class="btn btn-light btn-lg mt-3">Solicitar Información</a>
-        </div>
-    </section>
+        <section class="py-5 bg-white text-dark">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h3 class="fw-bold">Mantente Informado</h3>
+                        <p class="mb-0">Suscríbete a nuestro boletín para recibir novedades, consejos agrícolas y ofertas especiales.</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <form id="newsletterForm" class="d-flex gap-2">
+                            <input type="email" class="form-control" placeholder="Tu correo electrónico"
+                                id="newsletterEmail" required>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-paper-plane me-1"></i>Suscribirse
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-    <div th:replace="fragments/base :: footer"></div>
+            <div id="newsletterToast"
+                class="toast align-items-center text-white bg-success border-0 position-fixed bottom-0 end-0 m-3"
+                role="alert" aria-live="assertive" aria-atomic="true" style="display: none; z-index: 9999;">
+                <div class="d-flex">
+                    <div class="toast-body" id="newsletterToastMessage">
+                        </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="ocultarToast()"
+                        aria-label="Cerrar"></button>
+                </div>
+            </div>
+        </section>
 
-    <!-- Botón flotante WhatsApp -->
-    <a href="https://wa.me/51932832985" class="btn btn-success rounded-circle p-3 shadow-lg"
-        style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+        <section class="bg-success py-5 text-white">
+            <div class="container text-center">
+                <h2 class="fw-bold">¿Listo para mejorar la salud de tus cultivos?</h2>
+                <p class="lead">Contáctanos hoy mismo y recibe una cotización personalizada para tus necesidades</p>
+                <a th:href="@{/contactanos}" class="btn btn-light btn-lg mt-3">Solicitar Información</a>
+            </div>
+        </section>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JavaScript Personalizado-->
+    </main>
     <script th:src="@{/js/aviasac.js}"></script>
-</body>
 
+</body>
 </html>

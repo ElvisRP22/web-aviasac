@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aviasac.web_aviasac.model.Testimonio;
-import com.aviasac.web_aviasac.respository.TestimonioRepository;
+import com.aviasac.web_aviasac.model.Usuario;
+import com.aviasac.web_aviasac.repository.TestimonioRepository;
 import com.aviasac.web_aviasac.services.TestimonioService;
 
 @Service
@@ -40,5 +41,11 @@ public class TestimonioServiceImpl implements TestimonioService {
     @Override
     public void deleteById(Integer id) {
         repo.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existeTestimonioDeUsuario(Usuario usuario) {
+        return repo.existsByUsuario(usuario);
     }
 }
