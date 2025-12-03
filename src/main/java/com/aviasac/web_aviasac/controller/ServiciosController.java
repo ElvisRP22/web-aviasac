@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aviasac.web_aviasac.model.Servicio;
 import com.aviasac.web_aviasac.services.ServicioService;
 import com.aviasac.web_aviasac.services.TipoDeCultivoService;
+import com.aviasac.web_aviasac.services.TrabajoService;
 
 @Controller
 @RequestMapping("/servicios")
@@ -23,16 +24,21 @@ public class ServiciosController {
 
     private final ServicioService servicioService;
     private final TipoDeCultivoService tipoDeCultivoService;
+    private final TrabajoService trabajoService;
 
-    public ServiciosController(ServicioService servicioService, TipoDeCultivoService tipoDeCultivoService) {
+    public ServiciosController(ServicioService servicioService, 
+        TipoDeCultivoService tipoDeCultivoService,
+        TrabajoService trabajoService) {
         this.servicioService = servicioService;
         this.tipoDeCultivoService = tipoDeCultivoService;
+        this.trabajoService=trabajoService;
     }
 
     @GetMapping("")
     public String servicios(Model model) {
         model.addAttribute("servicios", servicioService.findAll());
         model.addAttribute("tiposDeCultivo", tipoDeCultivoService.findAll());
+        model.addAttribute("trabajos", trabajoService.findAll());
         return "servicios";
     }
 
@@ -40,9 +46,19 @@ public class ServiciosController {
     @ResponseBody
     public ResponseEntity<?> guardarServicio(
             @ModelAttribute Servicio servicio,
-            @RequestParam("archivoImagen") MultipartFile archivoImagen) {
+            @RequestParam(value = "archivoImagen", required = false) MultipartFile archivoImagen) {
 
         try {
+            Servicio servicioBD = null;
+
+            if (servicio.getId() != null) {
+                servicioBD = servicioService.findById(servicio.getId()).orElse(null);
+
+                if (servicioBD != null) {
+                    servicio.setUrlImagen(servicioBD.getUrlImagen());
+                }
+            }
+
             String carpeta = "uploads/";
             Path ruta = Paths.get(carpeta);
 
@@ -50,7 +66,7 @@ public class ServiciosController {
                 Files.createDirectories(ruta);
             }
 
-            if (!archivoImagen.isEmpty()) {
+            if (archivoImagen != null && !archivoImagen.isEmpty()) {
                 String nombreArchivo = Paths.get(archivoImagen.getOriginalFilename())
                         .getFileName().toString();
 
@@ -65,15 +81,34 @@ public class ServiciosController {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Map.of(
                             "success", true,
-                            "message", "Servicio registrado correctamente"
-                    ));
+                            "message", "Servicio guardado correctamente"));
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of(
                             "success", false,
-                            "message", "Error al guardar el servicio: " + e.getMessage()
-                    ));
+                            "message", "Error al guardar el servicio: " + e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    @ResponseBody
+    public ResponseEntity<?> eliminarServicio(@PathVariable Integer id) {
+        try {
+            servicioService.deleteById(id);
+
+            return ResponseEntity.ok(
+                    Map.of(
+                            "success", true,
+                            "message", "Servicio eliminado correctamente"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message", "Error al eliminar el servicio: " + e.getMessage()));
         }
     }
 

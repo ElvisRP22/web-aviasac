@@ -11,4 +11,6 @@ public interface SuscripcionService {
     Suscripcion save(Suscripcion suscripcion);
     void deleteById(Integer id);
     boolean existsByEmail(String email);
+    boolean existById(Integer id);
+    Long suscriptoresTotales();
 }

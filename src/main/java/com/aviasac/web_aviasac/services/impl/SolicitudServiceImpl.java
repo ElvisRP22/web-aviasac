@@ -41,5 +41,10 @@ public class SolicitudServiceImpl implements SolicitudService {
     public void deleteById(Integer id) {
         repo.deleteById(id);
     }
+
+    @Override
+    public Long solicitudesTotales() {
+        return repo.count();
+    }
 }
 

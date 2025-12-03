@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      th:fragment="layout(content, title, links, scripts)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    th:fragment="layout(content, title, links, scripts)">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title th:replace="${title}">Aviación Agrícola SAC</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
@@ -16,7 +15,8 @@
     <th:block th:replace="${links} ?: ~{}"></th:block>
 </head>
 
-<body class="d-flex flex-column min-vh-100"> <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
             <a class="navbar-brand" th:href="@{/}">
                 <i class="fas fa-plane me-2"></i>Aviación Agrícola SAC
@@ -32,7 +32,7 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/testimonios}">Clientes</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/nosotros}">Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/contactanos}">Contáctanos</a></li>
-                    
+
                     <li class="nav-item" sec:authorize="isAnonymous()">
                         <a class="nav-link" th:href="@{/auth/login}">
                             <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
@@ -46,20 +46,22 @@
                             <span th:text="${#authentication.name}">Usuario</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" th:href="@{/perfil}"><i class="fas fa-user"></i> Perfil</a></li>
-
-                            <li sec:authorize="hasAuthority('ROLE_ADMIN')">
-                                <a class="dropdown-item" th:href="@{/admin/dashboard}"><i class="fas fa-tools"></i> Panel Admin</a>
+                            <li><a class="dropdown-item" th:href="@{/perfil}"><i class="fas fa-user"></i> Perfil</a>
                             </li>
 
-                            <li><hr class="dropdown-divider"></li>
-                            
+                            <li sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                <a class="dropdown-item" th:href="@{/admin/dashboard}"><i class="fas fa-tools"></i>
+                                    Panel Admin</a>
+                            </li>
+
                             <li>
-                                <form th:action="@{/logout}" method="post" class="d-inline">
-                                    <button type="submit" class="dropdown-item">
-                                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                                    </button>
-                                </form>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item text-danger" href="#" onclick="logout(event)">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -114,11 +116,13 @@
         style="position:fixed; bottom:20px; right:20px; font-size:24px; z-index:1000;" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/aviasac.js}"></script>
+    <script th:src="@{/js/logout.js}"></script>
 
     <th:block th:replace="${scripts}"></th:block>
 
 </body>
+
 </html>

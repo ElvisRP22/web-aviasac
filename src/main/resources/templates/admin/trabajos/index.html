@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+<body>
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-briefcase me-2"></i>Trabajos Realizados</span>
+                <button class="btn btn-sm btn-light" onclick="abrirModalNuevo()">
+                    <i class="fas fa-plus me-1"></i> Nuevo
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${trabajos}">
+                                <td th:text="${item.id}"></td>
+                                <td th:text="${item.tituloTrabajo}"></td>
+                                <td>
+                                    <span th:utext="${#strings.abbreviate(item.descripcion, 50)}"></span>
+                                </td>
+                                <td>
+                                    <img th:if="${item.urlFile}" 
+                                         th:src="@{'/uploads/trabajos/' + ${item.urlFile}}"
+                                         class="rounded border" 
+                                         style="width: 50px; height: 50px; object-fit: cover;"
+                                         alt="Imagen del trabajo">
+                                    <span th:unless="${item.urlFile}" class="text-muted">Sin imagen</span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning me-1" 
+                                            onclick="editarTrabajo(this)"
+                                            th:data-id="${item.id}" 
+                                            th:data-titulo="${item.tituloTrabajo}" 
+                                            th:data-descripcion="${item.descripcion}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" 
+                                            th:onclick="'confirmarEliminacion(' + ${item.id} + ')'"
+                                            title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Nuevo/Editar Trabajo -->
+        <div class="modal fade" id="trabajoModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="trabajoForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Nuevo Trabajo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="trabajoId">
+                            
+                            <div class="mb-3">
+                                <label for="trabajoTitulo" class="form-label">
+                                    Título del Trabajo <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="trabajoTitulo" 
+                                       name="tituloTrabajo" 
+                                       maxlength="200" 
+                                       required
+                                       placeholder="Ej: Fumigación en cultivo de arroz">
+                                <div class="form-text">Máximo 200 caracteres</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="trabajoDescripcion" class="form-label">
+                                    Descripción <span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control" 
+                                          id="trabajoDescripcion" 
+                                          name="descripcion" 
+                                          rows="4"></textarea>
+                                <div class="form-text">Máximo 255 caracteres. Puedes usar formato HTML.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Imagen del Trabajo</label>
+                                <input type="file" 
+                                       class="form-control" 
+                                       name="archivoImagen" 
+                                       accept="image/*">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle"></i> 
+                                    Al editar, si no seleccionas una nueva imagen, se mantendrá la actual.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script th:src="@{/js/admin/trabajos.js}"></script>
+</body>
+</html>

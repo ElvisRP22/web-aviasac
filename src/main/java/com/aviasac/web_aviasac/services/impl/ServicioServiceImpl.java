@@ -41,4 +41,9 @@ public class ServicioServiceImpl implements ServicioService {
     public void deleteById(Integer id) {
         repo.deleteById(id);
     }
+
+    @Override
+    public Long serviciosTotales() {
+        return repo.count();
+    }
 }

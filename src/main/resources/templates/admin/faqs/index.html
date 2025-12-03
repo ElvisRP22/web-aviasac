@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
+
 <body>
     <section>
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-question-circle me-2"></i>Preguntas Frecuentes (FAQs)</span>
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#faqModal">
-                    <i class="fas fa-plus me-1"></i> Nueva
+                <span>
+                    <i class="fas fa-question-circle me-2"></i>Preguntas Frecuentes
+                </span>
+                <button class="btn btn-light btn-sm" onclick="abrirModalCrear()">
+                    <i class="fas fa-plus me-1"></i> Nueva FAQ
                 </button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Pregunta</th>
@@ -23,19 +25,32 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="pf : ${faqs}"> <td th:text="${pf.id}"></td>
-                                <td th:text="${pf.pregunta}"></td>
-                                <td th:text="${#strings.abbreviate(pf.respuesta, 40)}"></td>
+                            <tr th:each="pf : ${faqs}">
+                                <td th:text="${pf.id}"></td>
+                                <td th:text="${pf.pregunta}" class="fw-bold"></td>
+                                <td th:text="${#strings.abbreviate(pf.respuesta, 50)}"></td>
                                 <td>
-                                    <span class="badge" th:classappend="${pf.estado} ? 'bg-success' : 'bg-danger'"
-                                          th:text="${pf.estado} ? 'Activo' : 'Inactivo'"></span>
+                                    <span class="badge rounded-pill"
+                                        th:classappend="${pf.estado} ? 'bg-success' : 'bg-secondary'"
+                                        th:text="${pf.estado} ? 'Activo' : 'Inactivo'">
+                                    </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" onclick="editarFaq(this)"
-                                            th:data-id="${pf.id}" th:data-pregunta="${pf.pregunta}" 
-                                            th:data-respuesta="${pf.respuesta}" th:data-estado="${pf.estado}">
+                                    <button class="btn btn-sm btn-outline-warning me-1" onclick="abrirModalEditar(this)"
+                                        th:data-id="${pf.id}" th:data-pregunta="${pf.pregunta}"
+                                        th:data-respuesta="${pf.respuesta}" th:data-estado="${pf.estado}">
                                         <i class="fas fa-edit"></i>
                                     </button>
+
+                                    <button class="btn btn-sm btn-outline-danger"
+                                        th:onclick="'eliminarFaq(' + ${pf.id} + ')'">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(faqs)}">
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    No hay preguntas frecuentes registradas.
                                 </td>
                             </tr>
                         </tbody>
@@ -44,24 +59,25 @@
             </div>
         </div>
 
-        <div class="modal fade" id="faqModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="faqModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Gestionar FAQ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
                     <form id="faqForm">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Gestionar FAQ</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
                         <div class="modal-body">
                             <input type="hidden" name="id" id="faqId">
-                            
+
                             <div class="mb-3">
                                 <label for="faqPregunta" class="form-label">Pregunta</label>
                                 <input type="text" class="form-control" id="faqPregunta" name="pregunta" required>
                             </div>
                             <div class="mb-3">
                                 <label for="faqRespuesta" class="form-label">Respuesta</label>
-                                <textarea class="form-control" id="faqRespuesta" name="respuesta" rows="3" required></textarea>
+                                <textarea class="form-control" id="faqRespuesta" name="respuesta" rows="4"
+                                    required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="faqEstado" class="form-label">Estado</label>
@@ -73,7 +89,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Guardar
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -81,16 +99,7 @@
         </div>
     </section>
 
-    <script>
-        function editarFaq(btn) {
-            // Lógica simple para llenar el modal
-            document.getElementById('faqId').value = btn.getAttribute('data-id');
-            document.getElementById('faqPregunta').value = btn.getAttribute('data-pregunta');
-            document.getElementById('faqRespuesta').value = btn.getAttribute('data-respuesta');
-            document.getElementById('faqEstado').value = btn.getAttribute('data-estado');
-            
-            new bootstrap.Modal(document.getElementById('faqModal')).show();
-        }
-    </script>
+    <script th:src="@{/js/admin/faqs.js}"></script>
 </body>
+
 </html>

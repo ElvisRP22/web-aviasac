@@ -12,4 +12,5 @@ public interface TestimonioService {
     Testimonio save(Testimonio testimonio);
     void deleteById(Integer id);
     boolean existeTestimonioDeUsuario(Usuario usuario);
+    Long testimoniosTotales();
 }

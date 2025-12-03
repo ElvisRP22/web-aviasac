@@ -10,4 +10,5 @@ public interface ServicioService {
     Optional<Servicio> findById(Integer id);
     Servicio save(Servicio servicio);
     void deleteById(Integer id);
+    Long serviciosTotales();
 }

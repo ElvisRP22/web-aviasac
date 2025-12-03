@@ -3,33 +3,122 @@
       th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
 <body>
     <section>
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-file-invoice-dollar me-2"></i>Cotizaciones Recibidas</span>
-                <button class="btn btn-sm btn-light border" onclick="exportToCSV('cotizaciones')">Exportar</button>
+                <span><i class="fas fa-paper-plane me-2"></i>Solicitudes de Servicios</span>
+                <div>
+                    <select id="filtroEstado" class="form-select form-select-sm" style="width: auto;">
+                        <option value="">Todos los estados</option>
+                        <option value="PENDIENTE">Pendiente</option>
+                        <option value="EN_PROCESO">En Proceso</option>
+                        <option value="COMPLETADA">Completada</option>
+                        <option value="CANCELADA">Cancelada</option>
+                    </select>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
+            <div class="card-body p-0">
+                <div class="table">
+                    <table class="table table-hover align-middle mb-0" id="tablaSolicitudes">
+                        <thead class="bg-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Cliente</th>
                                 <th>Servicio</th>
-                                <th>Fecha</th>
+                                <th>Cultivo</th>
+                                <th>Hectáreas</th>
+                                <th>Ubicación</th>
+                                <th>Fecha Solicitud</th>
+                                <th>Fecha Preferida</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Juan Pérez</td>
-                                <td>Drone</td>
-                                <td>2023-10-25</td>
-                                <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                            <tr th:each="sol : ${solicitudes}">
+                                <td th:text="${sol.id}"></td>
                                 <td>
-                                    <button class="btn btn-sm btn-info" title="Ver Detalle"><i class="fas fa-eye"></i></button>
+                                    <strong th:text="${sol.usuario.nombre}"></strong><br>
+                                    <small class="text-muted">
+                                        <i class="fas fa-phone"></i> <span th:text="${sol.usuario.telefono}"></span>
+                                    </small>
+                                </td>
+                                <td th:text="${sol.servicio.nombre}"></td>
+                                <td th:text="${sol.tipoDeCultivo.nombre}"></td>
+                                <td>
+                                    <span th:text="${sol.numHectareas}"></span> ha
+                                </td>
+                                <td th:text="${#strings.abbreviate(sol.ubicacion, 30)}"></td>
+                                <td>
+                                    <small th:text="${#temporals.format(sol.fechaSolicitud, 'dd/MM/yyyy')}"></small><br>
+                                    <small class="text-muted" th:text="${#temporals.format(sol.fechaSolicitud, 'HH:mm')}"></small>
+                                </td>
+                                <td>
+                                    <span th:if="${sol.fechaPreferida != null}" 
+                                          th:text="${#temporals.format(sol.fechaPreferida, 'dd/MM/yyyy')}"
+                                          class="badge bg-light text-dark">
+                                    </span>
+                                    <span th:unless="${sol.fechaPreferida != null}" 
+                                          class="text-muted">-</span>
+                                </td>
+                                <td>
+                                    <span class="badge" 
+                                          th:classappend="${sol.estado.name() == 'PENDIENTE' ? 'bg-warning text-dark' : 
+                                                          sol.estado.name() == 'EN_PROCESO' ? 'bg-info' : 
+                                                          sol.estado.name() == 'COMPLETADA' ? 'bg-success' : 'bg-danger'}"
+                                          th:text="${sol.estado.descripcion}">
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-info" 
+                                            onclick="verDetalle(this)"
+                                            th:data-id="${sol.id}"
+                                            title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" 
+                                                class="btn btn-sm btn-warning dropdown-toggle" 
+                                                data-bs-toggle="dropdown"
+                                                title="Cambiar estado">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" 
+                                                   href="#"
+                                                   th:onclick="'cambiarEstado(' + ${sol.id} + ', \'PENDIENTE\')'">
+                                                    <i class="fas fa-clock text-warning"></i> Pendiente
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" 
+                                                   href="#"
+                                                   th:onclick="'cambiarEstado(' + ${sol.id} + ', \'EN_PROCESO\')'">
+                                                    <i class="fas fa-spinner text-info"></i> En Proceso
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" 
+                                                   href="#"
+                                                   th:onclick="'cambiarEstado(' + ${sol.id} + ', \'COMPLETADA\')'">
+                                                    <i class="fas fa-check text-success"></i> Completada
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item" 
+                                                   href="#"
+                                                   th:onclick="'cambiarEstado(' + ${sol.id} + ', \'CANCELADA\')'">
+                                                    <i class="fas fa-times text-danger"></i> Cancelada
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <button class="btn btn-sm btn-danger" 
+                                            th:onclick="'confirmarEliminacion(' + ${sol.id} + ')'"
+                                            title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -37,10 +126,91 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal Detalle -->
+        <div class="modal fade" id="detalleModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-info-circle me-2"></i>Detalles de la Solicitud #<span id="detId"></span>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">CLIENTE</label>
+                                <p class="mb-0" id="detCliente"></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">EMAIL</label>
+                                <p class="mb-0" id="detEmail"></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">TELÉFONO</label>
+                                <p class="mb-0" id="detTelefono"></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">ESTADO</label>
+                                <p><span id="detEstado" class="badge"></span></p>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h6 class="text-primary mb-3"><i class="fas fa-file-alt me-2"></i>Detalles del Servicio</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">SERVICIO</label>
+                                <p class="mb-0" id="detServicio"></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">TIPO DE CULTIVO</label>
+                                <p class="mb-0" id="detCultivo"></p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="fw-bold text-muted small">HECTÁREAS</label>
+                                <p class="mb-0" id="detHectareas"></p>
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="fw-bold text-muted small">ÁREA PARA ATERRIZAR</label>
+                                <p class="mb-0 text-muted" id="detArea"></p>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="fw-bold text-muted small">UBICACIÓN</label>
+                                <p class="mb-0" id="detUbicacion"></p>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="fw-bold text-muted small">MENSAJE ADICIONAL</label>
+                                <p class="mb-0 text-muted" id="detMensaje"></p>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h6 class="text-primary mb-3"><i class="fas fa-calendar me-2"></i>Fechas</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">FECHA DE SOLICITUD</label>
+                                <p class="mb-0" id="detFechaSolicitud"></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold text-muted small">FECHA PREFERIDA</label>
+                                <p class="mb-0" id="detFechaPreferida"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-    
-    <script>
-        console.log("Vista Cotizaciones");
-    </script>
+
+    <script th:src="@{/js/admin/solicitudes.js}"></script>
 </body>
 </html>

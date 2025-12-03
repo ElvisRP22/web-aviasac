@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,8 +31,9 @@ public class Trabajo {
     private String tituloTrabajo;
 
     @NotBlank(message = "La descripción es obligatoria")
-    @Size(max = 255, message = "La descripción no debe superar {max} caracteres")
-    @Column(name = "descripcion", length = 255, nullable = false)
+	@Size(max = 5000, message = "La descripción no debe superar {max} caracteres")
+	@Lob
+	@Column(name = "descripcion", nullable = false)
     private String descripcion;
 
     @Size(max = 255, message = "La URL del archivo no debe superar {max} caracteres")

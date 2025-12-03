@@ -10,10 +10,10 @@
                     <i class="fas fa-wrench me-2"></i>Gestión de Servicios
                 </span>
                 <div>
-                    <button class="btn btn-sm btn-outline-success me-2" onclick="exportToCSV('servicios')">
+                    <button class="btn btn-sm btn-light me-2" onclick="exportToCSV('servicios')">
                         <i class="fas fa-download me-1"></i> Exportar
                     </button>
-                    <button class="btn btn-sm btn-primary" onclick="abrirModalNuevo()">
+                    <button class="btn btn-sm btn-light" onclick="abrirModalNuevo()">
                         <i class="fas fa-plus me-1"></i> Nuevo
                     </button>
                 </div>
@@ -44,12 +44,14 @@
                                 </td>
 
                                 <td class="text-end pe-4">
-                                    <button class="btn btn-sm btn-outline-warning me-1" onclick="editarServicio(this)"
-                                        th:data-id="${servicio.id}" th:data-nombre="${servicio.nombre}"
-                                        th:data-descripcion="${servicio.descripcion}">
+                                    <button class="btn btn-sm btn-outline-warning me-1" th:data-id="${servicio.id}"
+                                        th:data-nombre="${servicio.nombre}"
+                                        th:data-descripcion="${servicio.descripcion}" onclick="editarServicio(this)">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-outline-danger">
+
+                                    <button class="btn btn-sm btn-outline-danger"
+                                        th:onclick="'confirmarEliminacion(' + ${servicio.id} + ')'">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
@@ -63,8 +65,7 @@
         <div class="modal fade" id="servicioModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form id="servicioForm" enctype="multipart/form-data" method="post"
-                        th:action="@{/admin/servicios/guardar}">
+                    <form id="servicioForm" enctype="multipart/form-data">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalTitle">Nuevo Servicio</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -96,54 +97,7 @@
             </div>
         </div>
     </section>
-
-    <script>
-        $(document).ready(function () {
-            // 1. Inicializar Summernote
-            $('#servicioDesc').summernote({
-                placeholder: 'Escribe la descripción detallada del servicio...',
-                tabsize: 2,
-                height: 200, // Altura del editor
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link']], // Quitamos imagen/video para hacerlo más ligero
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-        });
-
-        // Función para abrir modal en modo "Nuevo"
-        function abrirModalNuevo() {
-            document.getElementById('servicioForm').reset();
-            document.getElementById('servicioId').value = '';
-            document.getElementById('modalTitle').innerText = 'Nuevo Servicio';
-
-            // Limpiar Summernote
-            $('#servicioDesc').summernote('code', '');
-
-            new bootstrap.Modal(document.getElementById('servicioModal')).show();
-        }
-
-        // Función para abrir modal en modo "Editar"
-        function editarServicio(btn) {
-            const id = btn.getAttribute('data-id');
-            const nombre = btn.getAttribute('data-nombre');
-            const desc = btn.getAttribute('data-descripcion');
-
-            document.getElementById('servicioId').value = id;
-            document.getElementById('servicioNombre').value = nombre;
-            document.getElementById('servicioEstado').value = estado;
-            document.getElementById('modalTitle').innerText = 'Editar Servicio';
-
-            // IMPORTANTE: Cargar datos en Summernote
-            $('#servicioDesc').summernote('code', desc);
-
-            new bootstrap.Modal(document.getElementById('servicioModal')).show();
-        }
-    </script>
+    <script th:src="@{/js/admin/servicios.js}"></script>
 </body>
 
 </html>

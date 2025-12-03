@@ -9,4 +9,5 @@ public interface SolicitudService {
     Optional<Solicitud> findById(Integer id);
     Solicitud save(Solicitud solicitud);
     void deleteById(Integer id);
+    Long solicitudesTotales();
 }

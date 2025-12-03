@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/login.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -19,27 +19,19 @@
                 <p>Iniciar sesión en tu cuenta</p>
             </div>
 
-            <!-- Mensaje de error/éxito -->
-            <div id="error-message" class="alert"></div>
-
-            <div th:if="${logout}" class="alert alert-success alert-dismissible fade show text-center" role="alert">
-                <p th:text="${logout}" class="mb-0"></p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            <div th:if="${param.registrado}" class="alert alert-success text-center">
+                ¡Registro exitoso! Por favor inicia sesión.
             </div>
 
-            <!-- Formulario con ID CORREGIDO: loginForm en lugar de login-form -->
-            <form id="loginForm" th:action="@{/auth/login}" th:object="${usuario}" method="post">
+            <form id="loginForm">
                 <div class="mb-3 input-icon">
                     <i class="fas fa-user-circle"></i>
-                    <input type="text" th:field="*{username}" class="form-control" placeholder="Nombre de usuario"
-                        required>
-                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
+                    <input type="text" id="username" class="form-control" placeholder="Nombre de usuario" required>
                 </div>
 
                 <div class="mb-3 input-icon">
                     <i class="fas fa-lock"></i>
-                    <input type="password" th:field="*{password}" class="form-control" placeholder="Contraseña"
-                        required>
+                    <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
                 </div>
 
                 <div class="remember-forgot">
@@ -50,7 +42,10 @@
                     <a href="#">¿Olvidaste tu contraseña?</a>
                 </div>
 
-                <button type="submit" class="btn-login">Iniciar Sesión</button>
+                <button type="submit" class="btn-login" id="btnLogin">
+                    <span id="btnText">Iniciar Sesión</span>
+                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                </button>
 
                 <div class="form-footer">
                     <p>¿No tienes una cuenta? <a th:href="@{/auth/registro}">Regístrate aquí</a></p>
@@ -62,10 +57,7 @@
             <p>&copy; 2025 Aviación Agrícola SAC. Todos los derechos reservados.</p>
         </div>
     </div>
-    <!--<script th:src="@{/js/login.js}"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+    <script th:src="@{/js/login.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

@@ -1,24 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
-<body>
-    
-    <section>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="text-muted">Gestión de Suscripciones</h4>
-        </div>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout/base :: layout(~{::section}, ~{::script})}">
 
+<body>
+
+    <section>
         <div class="card shadow-sm">
-            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <span>
                     <i class="fas fa-newspaper me-2"></i>Suscriptores Registrados
                 </span>
-                
-                <button class="btn btn-sm btn-outline-success" onclick="exportToCSV('newsletter')">
+
+                <button class="btn btn-sm btn-light" onclick="exportToCSV('newsletter')">
                     <i class="fas fa-file-csv me-1"></i> Exportar
                 </button>
             </div>
-            
+
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -35,27 +31,27 @@
                             <tr th:each="suscriptor : ${suscriptores}">
                                 <td class="ps-4 fw-bold" th:text="${suscriptor.id}">1</td>
                                 <td th:text="${suscriptor.email}">correo@ejemplo.com</td>
-                                
+
                                 <td th:text="${#temporals.format(suscriptor.fechaSuscripcion, 'dd/MM/yyyy HH:mm')}">
                                     01/01/2025 12:00
                                 </td>
-                                
+
                                 <td>
                                     <span class="badge rounded-pill"
-                                          th:classappend="${suscriptor.estado} ? 'bg-success' : 'bg-secondary'"
-                                          th:text="${suscriptor.estado} ? 'Activo' : 'Inactivo'">
+                                        th:classappend="${suscriptor.estado} ? 'bg-success' : 'bg-secondary'"
+                                        th:text="${suscriptor.estado} ? 'Activo' : 'Inactivo'">
                                     </span>
                                 </td>
-                                
+
                                 <td class="text-end pe-4">
-                                    <button class="btn btn-sm btn-outline-danger" 
-                                            th:onclick="'confirmarEliminarSuscriptor(' + ${suscriptor.id} + ')'"
-                                            title="Eliminar suscripción">
+                                    <button class="btn btn-sm btn-outline-danger"
+                                        th:onclick="'confirmarEliminarSuscriptor(' + ${suscriptor.id} + ')'"
+                                        title="Eliminar suscripción">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
                             </tr>
-                            
+
                             <tr th:if="${#lists.isEmpty(suscriptores)}">
                                 <td colspan="5" class="text-center py-5 text-muted">
                                     <i class="fas fa-inbox fa-2x mb-3 d-block"></i>
@@ -66,7 +62,7 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="card-footer bg-white" th:if="${!#lists.isEmpty(suscriptores)}">
                 <small class="text-muted">Mostrando registros recientes</small>
             </div>
@@ -74,23 +70,83 @@
     </section>
 
     <script>
-        function confirmarEliminarSuscriptor(id) {
-            // Aquí puedes usar SweetAlert o un confirm nativo
-            if (confirm('¿Estás seguro de eliminar este suscriptor? Esta acción no se puede deshacer.')) {
-                // Ejemplo de llamada Fetch para eliminar
-                /*
-                fetch('/admin/newsletter/eliminar/' + id, {
-                    method: 'DELETE',
-                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content }
-                }).then(res => {
-                    if(res.ok) location.reload();
-                    else alert('Error al eliminar');
+        function getJwtToken() {
+            let token = localStorage.getItem('jwtToken');
+            if (!token) {
+                const match = document.cookie.match(new RegExp('(^| )jwtToken=([^;]+)'));
+                token = match ? match[2] : null;
+            }
+            return token;
+        }
+
+        function handleAuthError(responseStatus) {
+            if (responseStatus === 401 || responseStatus === 403) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sesión Expirada',
+                    text: 'Su sesión ha expirado. Redirigiendo al login.',
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: 'Ir al Login'
+                }).then(() => {
+                    localStorage.removeItem('jwtToken');
+                    window.location.href = '/auth/login';
                 });
-                */
-                console.log("Eliminando suscriptor ID: " + id);
-                alert("Funcionalidad de eliminación pendiente de conectar al Backend para ID: " + id);
+                return true;
+            }
+            return false;
+        }
+
+        function confirmarEliminarSuscriptor(id) {
+            Swal.fire({
+                title: '¿Eliminar Suscriptor?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    eliminarSuscriptor(id);
+                }
+            });
+        }
+
+        async function eliminarSuscriptor(id) {
+            const token = getJwtToken();
+
+            if (!token) {
+                Swal.fire('Error', 'Debe iniciar sesión para eliminar suscriptores.', 'warning')
+                    .then(() => window.location.href = '/auth/login');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/newsletter/eliminar/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (handleAuthError(response.status)) return;
+
+                const result = await response.json();
+
+                if (result.success) {
+                    Swal.fire('Eliminado', result.message, 'success')
+                        .then(() => location.reload());
+                } else {
+                    Swal.fire('Error', result.message || 'No se pudo eliminar el suscriptor.', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire('Error', 'No se pudo conectar con el servidor para eliminar.', 'error');
             }
         }
+
     </script>
 </body>
+
 </html>

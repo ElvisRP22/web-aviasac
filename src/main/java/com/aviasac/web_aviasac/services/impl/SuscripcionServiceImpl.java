@@ -46,4 +46,14 @@ public class SuscripcionServiceImpl implements SuscripcionService {
     public boolean existsByEmail(String email) {
         return repo.existsByEmail(email);
     }
+
+    @Override
+    public Long suscriptoresTotales() {
+        return repo.count();    
+    }
+
+    @Override
+    public boolean existById(Integer id) {
+        return repo.existsById(id);
+    }
 }

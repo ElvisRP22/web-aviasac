@@ -12,7 +12,7 @@
             <div class="col-md-3">
                 <div class="card bg-primary text-white h-100">
                     <div class="card-body text-center">
-                        <h3 class="display-4">5</h3>
+                        <h3 class="display-4" th:text="${solicitudesTotales}">5</h3>
                         <div>Cotizaciones Nuevas</div>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
             <div class="col-md-3">
                 <div class="card bg-success text-white h-100">
                     <div class="card-body text-center">
-                        <h3 class="display-4">6</h3>
+                        <h3 class="display-4"th:text="${suscripcionesTotales}">6</h3>
                         <div>Suscriptores</div>
                     </div>
                 </div>
@@ -28,16 +28,16 @@
             <div class="col-md-3">
                 <div class="card bg-info text-white h-100">
                     <div class="card-body text-center">
-                        <h3 class="display-4">4</h3>
-                        <div>Consultas</div>
+                        <h3 class="display-4"th:text="${serviciosTotales}">4</h3>
+                        <div>Servicios</div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card bg-warning text-dark h-100">
                     <div class="card-body text-center">
-                        <h3 class="display-4">4</h3>
-                        <div>Pendientes</div>
+                        <h3 class="display-4"th:text="${testimoniosTotales}">4</h3>
+                        <div>Testimonios</div>
                     </div>
                 </div>
             </div>

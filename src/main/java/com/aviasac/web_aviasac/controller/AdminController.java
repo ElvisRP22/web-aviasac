@@ -9,6 +9,7 @@ import com.aviasac.web_aviasac.services.ServicioService;
 import com.aviasac.web_aviasac.services.SolicitudService;
 import com.aviasac.web_aviasac.services.SuscripcionService;
 import com.aviasac.web_aviasac.services.TestimonioService;
+import com.aviasac.web_aviasac.services.TrabajoService;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,6 +25,8 @@ public class AdminController {
     private SolicitudService solicitudService;
     @Autowired
     private TestimonioService testimonioService;
+    @Autowired
+    private TrabajoService trabajoService;
 
     @GetMapping
     public String index() {
@@ -33,6 +36,10 @@ public class AdminController {
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         model.addAttribute("activePage", "dashboard");
+        model.addAttribute("serviciosTotales", servicioService.serviciosTotales());
+        model.addAttribute("solicitudesTotales", solicitudService.solicitudesTotales());
+        model.addAttribute("suscripcionesTotales", suscripcionService.suscriptoresTotales());
+        model.addAttribute("testimoniosTotales", testimonioService.testimoniosTotales());
         return "admin/dashboard";
     }
 
@@ -71,5 +78,13 @@ public class AdminController {
         model.addAttribute("testimonios", testimonioService.findAll());
 
         return "admin/testimonios/index";
+    }
+
+    @GetMapping("/trabajos")
+    public String trabajos(Model model){
+        model.addAttribute("activePage", "trabajos");
+        model.addAttribute("trabajos", trabajoService.findAll());
+
+        return "admin/trabajos/index";
     }
 }

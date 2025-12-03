@@ -48,4 +48,9 @@ public class TestimonioServiceImpl implements TestimonioService {
     public boolean existeTestimonioDeUsuario(Usuario usuario) {
         return repo.existsByUsuario(usuario);
     }
+
+    @Override
+    public Long testimoniosTotales() {
+        return repo.count();
+    }
 }

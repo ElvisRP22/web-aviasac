@@ -1,108 +1,70 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const loginForm = document.getElementById('loginForm');
-    const errorMessage = document.getElementById('error-message');
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Evitar recarga
 
-    // Verificar que los elementos existan
-    if (!loginForm || !errorMessage) {
-        console.error('No se encontraron los elementos del formulario');
-        return;
-    }
+    const userField = document.getElementById('username');
+    const passField = document.getElementById('password');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
 
-    // Credenciales de ejemplo
-    const usuarios = [
-        {
-            email: "usuario@aviasac.com",
-            password: "password123",
-            nombre: "Stephano Benites",
-            rol: "usuario"
+    // UI Loading
+    userField.disabled = true;
+    passField.disabled = true;
+    btnLogin.disabled = true;
+    btnText.textContent = "Verificando...";
+    btnSpinner.classList.remove('d-none');
+
+    // Datos a enviar
+    const data = {
+        username: userField.value,
+        password: passField.value
+    };
+
+    fetch('/auth/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         },
-        {
-            email: "admin@aviasac.com",
-            password: "admin123",
-            nombre: "Administrador",
-            rol: "administrador"
-        }
-    ];
-
-    loginForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        console.log('Intentando login con:', email, password); // Para debug
-
-        // Validar campos vacíos
-        if (!email || !password) {
-            mostrarError("Por favor, complete todos los campos.");
-            return;
-        }
-
-        // Buscar usuario en el array de credenciales
-        const usuario = usuarios.find(user =>
-            user.email === email && user.password === password
-        );
-
-        if (usuario) {
-            console.log('Usuario encontrado:', usuario); // Para debug
-            // Guardar usuario en localStorage
-            localStorage.setItem("usuario", usuario.nombre);
-            localStorage.setItem("rol", usuario.rol);
-            localStorage.setItem("email", usuario.email);
-
-            // Mostrar mensaje de éxito
-            mostrarExito(`¡Bienvenido ${usuario.nombre}! Redirigiendo...`);
-
-            // Redirigir según el rol después de un breve delay
-            setTimeout(() => {
-                if (usuario.rol === "administrador") {
-                    window.location.href = "/admin";
-                } else {
-                    window.location.href = "/";
-                }
-            }, 1500);
-
-        } else {
-            console.log('Credenciales incorrectas'); // Para debug
-            mostrarError("Email o contraseña incorrectos. Por favor, inténtalo de nuevo.");
-        }
-    });
-
-    // Función para mostrar mensajes de error
-    function mostrarError(mensaje) {
-        errorMessage.textContent = mensaje;
-        errorMessage.style.display = "block";
-        errorMessage.className = "alert alert-danger";
-    }
-
-    // Función para mostrar mensajes de éxito
-    function mostrarExito(mensaje) {
-        errorMessage.textContent = mensaje;
-        errorMessage.style.display = "block";
-        errorMessage.className = "alert alert-success";
-
-        setTimeout(function () {
-            errorMessage.style.display = "none";
-        }, 3000);
-    }
-
-    // Verificar si hay credenciales guardadas
-    const rememberedEmail = localStorage.getItem('rememberedEmail');
-    if (rememberedEmail) {
-        document.getElementById('email').value = rememberedEmail;
-        document.getElementById('rememberMe').checked = true;
-    }
-
-    // Guardar email si la casilla "Recordarme" está marcada
-    const rememberMe = document.getElementById('rememberMe');
-    if (rememberMe) {
-        rememberMe.addEventListener('change', function () {
-            const email = document.getElementById('email').value;
-            if (this.checked && email) {
-                localStorage.setItem('rememberedEmail', email);
-            } else {
-                localStorage.removeItem('rememberedEmail');
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Credenciales incorrectas');
             }
+            return response.json();
+        })
+        .then(authResponse => {
+            // 1. Guardar Token
+            localStorage.setItem('jwtToken', authResponse.token);
+
+            // 2. (Opcional) Guardar en Cookie para compatibilidad básica
+            document.cookie = `jwtToken=${authResponse.token}; path=/; max-age=86400`;
+
+            // 3. Éxito
+            Swal.fire({
+                icon: 'success',
+                title: '¡Bienvenido!',
+                text: 'Redirigiendo al sistema...',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                // Redirigir al home o dashboard
+                window.location.href = '/';
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de Acceso',
+                text: 'Usuario o contraseña incorrectos',
+                confirmButtonColor: '#d33'
+            });
+
+            // Reset UI
+            userField.disabled = false;
+            passField.disabled = false;
+            btnLogin.disabled = false;
+            btnText.textContent = "Iniciar Sesión";
+            btnSpinner.classList.add('d-none');
         });
-    }
 });

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      th:replace="~{layout/base :: layout(~{::main}, ~{::title},~{::link}, ~{::script})}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    th:replace="~{layout/base :: layout(~{::main}, ~{::title},~{::link}, ~{::script})}">
 
 <head>
     <title>Servicios | Aviacion Agrícola S.A.C</title>
@@ -11,12 +10,13 @@
 <body>
 
     <main>
-        
+
         <section class="py-5" id="servicios">
             <div class="container">
                 <div class="text-center mb-5">
                     <h2 class="fw-bold">Nuestros Servicios</h2>
-                    <p class="text-muted">Ofrecemos soluciones efectivas para el control de plagas y enfermedades en sus cultivos</p>
+                    <p class="text-muted">Ofrecemos soluciones efectivas para el control de plagas y enfermedades en sus
+                        cultivos</p>
                 </div>
 
                 <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -33,23 +33,21 @@
                         <div class="card h-100 shadow-sm">
                             <img th:src="@{'/uploads/' + ${servicio.urlImagen}}" class="card-img-top"
                                 alt="imagen servicio" style="height: 250px; object-fit: cover;" />
-                            
+
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${servicio.nombre}"></h5>
-                                <div class="card-text descripcion-preview mb-3" th:utext="${servicio.descripcion}"></div>
-                                
-                                <button sec:authorize="isAuthenticated()" 
-                                        class="btn btn-success btn-sm w-100"
-                                        th:data-id="${servicio.id}"
-                                        th:data-nombre="${servicio.nombre}"
-                                        onclick="abrirModalCotizacion(this)">
+                                <div class="card-text descripcion-preview mb-3" th:utext="${servicio.descripcion}">
+                                </div>
+
+                                <button sec:authorize="isAuthenticated()" class="btn btn-success btn-sm w-100"
+                                    th:data-id="${servicio.id}" th:data-nombre="${servicio.nombre}"
+                                    onclick="abrirModalCotizacion(this)">
                                     <i class="fas fa-file-signature me-1"></i> Solicitar cotización
                                 </button>
 
-                                <a sec:authorize="isAnonymous()" 
-                                   th:href="@{/auth/login}"
-                                   class="btn btn-outline-success btn-sm w-100">
-                                    <i class="fas fa-sign-in-alt me-1"></i> Inicia sesión para cotizar
+                                <a sec:authorize="isAnonymous()" th:href="@{/auth/login}"
+                                    class="btn btn-success btn-sm w-100">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Solicitar cotización
                                 </a>
                             </div>
                         </div>
@@ -62,22 +60,87 @@
             <div class="container">
                 <div class="text-center mb-5">
                     <h2 class="fw-bold">Galería de Trabajos</h2>
-                    <p class="text-muted">Conoce algunos de nuestros trabajos de fumigación aérea</p>
+                    <p class="text-muted">Conoce algunos de nuestros trabajos de fumigación aérea realizados</p>
                 </div>
 
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="card service-card shadow h-100">
-                            <img th:src="@{/img/dron.jpg}" class="card-img-top" alt="Trabajo Dron">
-                            <div class="card-body">
-                                <h5 class="card-title">Tecnología Dron</h5>
-                                <p class="card-text small">Precisión milimétrica para cultivos delicados.</p>
+                <!-- Verificar si hay trabajos -->
+                <div th:if="${trabajos != null and !trabajos.isEmpty()}">
+                    <div class="row g-4">
+                        <!-- Iterar sobre los trabajos -->
+                        <div class="col-md-6 col-lg-4" th:each="trabajo : ${trabajos}">
+                            <div class="card service-card shadow h-100">
+                                <!-- Imagen del trabajo -->
+                                <img th:if="${trabajo.urlFile}" th:src="@{'/uploads/trabajos/' + ${trabajo.urlFile}}"
+                                    class="card-img-top" th:alt="${trabajo.tituloTrabajo}"
+                                    style="height: 250px; object-fit: cover;">
+
+                                <!-- Imagen por defecto si no hay imagen -->
+                                <img th:unless="${trabajo.urlFile}" th:src="@{/img/default-trabajo.jpg}"
+                                    class="card-img-top" alt="Trabajo sin imagen"
+                                    style="height: 250px; object-fit: cover;">
+
+                                <div class="card-body d-flex flex-column">
+                                    <!-- Título del trabajo -->
+                                    <h5 class="card-title" th:text="${trabajo.tituloTrabajo}">
+                                        Título del Trabajo
+                                    </h5>
+
+                                    <!-- Descripción (limitada) -->
+                                    <p class="card-text text-muted flex-grow-1"
+                                        th:utext="${#strings.abbreviate(trabajo.descripcion, 150)}">
+                                        Descripción del trabajo realizado...
+                                    </p>
+
+                                    <!-- Botón para ver más detalles -->
+                                    <button class="btn btn-success btn-sm mt-auto w-100" data-bs-toggle="modal"
+                                        data-bs-target="#trabajoDetalleModal" th:data-id="${trabajo.id}"
+                                        th:data-titulo="${trabajo.tituloTrabajo}"
+                                        th:data-descripcion="${trabajo.descripcion}" th:data-imagen="${trabajo.urlFile}"
+                                        onclick="verDetalleTrabajo(this)">
+                                        <i class="fas fa-eye me-1"></i> Ver Detalles
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
+
+                <!-- Mensaje cuando no hay trabajos -->
+                <div th:if="${trabajos == null or trabajos.isEmpty()}" class="text-center py-5">
+                    <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                    <p class="text-muted">Aún no hay trabajos registrados para mostrar.</p>
+                </div>
             </div>
         </section>
+
+        <!-- Modal para Ver Detalles del Trabajo -->
+        <div class="modal fade" id="trabajoDetalleModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="modalTrabajoTitulo">Detalles del Trabajo</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Imagen grande -->
+                        <div class="text-center mb-4" id="modalImagenContainer">
+                            <img id="modalTrabajoImagen" src="" alt="Imagen del trabajo"
+                                class="img-fluid rounded shadow" style="max-height: 400px; object-fit: contain;">
+                        </div>
+
+                        <!-- Descripción completa -->
+                        <div id="modalTrabajoDescripcion" class="text-muted">
+                            <!-- Contenido dinámico -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="cotizacionModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -86,10 +149,10 @@
                         <h5 class="modal-title">Solicitud de Cotización</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
-                    
+
                     <div class="modal-body">
                         <form th:action="@{/solicitudes/guardar}" method="post" id="formCotizacion">
-                            
+
                             <input type="hidden" id="modal-servicio-id" name="servicioId">
 
                             <div class="alert alert-primary d-flex align-items-center" role="alert">
@@ -106,7 +169,8 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Ubicación</label>
-                                    <input type="text" class="form-control" name="ubicacion" placeholder="Sector / Fundo" required>
+                                    <input type="text" class="form-control" name="ubicacion"
+                                        placeholder="Sector / Fundo" required>
                                 </div>
                             </div>
 
@@ -119,9 +183,8 @@
                                     <label class="form-label">Tipo de Cultivo</label>
                                     <select class="form-select" name="tipoDeCultivoId" required>
                                         <option value="">Seleccione...</option>
-                                        <option th:each="tipo : ${tiposDeCultivo}" 
-                                                th:value="${tipo.id}" 
-                                                th:text="${tipo.nombre}"></option>
+                                        <option th:each="tipo : ${tiposDeCultivo}" th:value="${tipo.id}"
+                                            th:text="${tipo.nombre}"></option>
                                     </select>
                                 </div>
                             </div>
@@ -141,7 +204,8 @@
                             </div>
 
                             <div class="text-end">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
                                 <button type="submit" class="btn btn-success">Confirmar Solicitud</button>
                             </div>
                         </form>
@@ -169,7 +233,7 @@
     </main>
 
     <script th:src="@{/js/servicios.js}"></script>
-    
+
     <script>
         function abrirModalCotizacion(boton) {
             // 1. Obtener datos del botón (data-attributes)
@@ -191,7 +255,7 @@
             } else {
                 divPista.style.display = 'none';
                 selectPista.removeAttribute('required');
-                selectPista.value = ""; 
+                selectPista.value = "";
             }
 
             // 4. Abrir Modal
@@ -201,4 +265,5 @@
     </script>
 
 </body>
+
 </html>

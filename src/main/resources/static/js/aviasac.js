@@ -1,76 +1,84 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('descargarFolleto').addEventListener('click', function () {
-        window.open('/Assets/documentos/Avance_Proyecto_Final_Marcos.docx', '_blank');
+    
+   const btnFolleto = document.getElementById('descargarFolleto');
+    if (btnFolleto) {
+        btnFolleto.addEventListener('click', function () {
+            window.open('/Assets/documentos/Avance_Proyecto_Final_Marcos.docx', '_blank');
+        });
+    }
 
-    });
+    const newsletterForm = document.getElementById('newsletterForm');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function (e) {
+            e.preventDefault();
 
-    // 13. Suscripción a newsletter
-    document.getElementById('newsletterForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+            const emailInput = document.getElementById('newsletterEmail');
+            const correo = emailInput.value;
 
-        const email = document.getElementById('newsletterEmail').value;
-        if (email && isValidEmail(email)) {
-            alert('¡Gracias por suscribirte a nuestro boletín!');
-            this.reset();
-        } else {
-            alert('Por favor, ingrese un correo electrónico válido.');
-        }
-    });
+            if (!correo || !isValidEmail(correo)) {
+                mostrarToast('Por favor, ingrese un correo electrónico válido.', 'warning');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('correo', correo);
+
+            const token = localStorage.getItem('jwtToken');
+            
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            fetch('/newsletter/suscribirse', {
+                method: 'POST',
+                headers: headers,
+                body: formData
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Error en la solicitud');
+                return res.json();
+            })
+            .then(data => {
+                mostrarToast(data.message, data.success ? 'success' : 'warning');
+                if (data.success) {
+                    newsletterForm.reset();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                mostrarToast('Ocurrió un error al intentar suscribirse.', 'danger');
+            });
+        });
+    }
 
     function isValidEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     }
-
 });
 
-// Suscribirse a newsletter
-document.getElementById('newsletterForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const correo = document.getElementById('newsletterEmail').value;
-    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    const formData = new FormData();
-    formData.append('correo', correo);
-
-    fetch('/newsletter/suscribirse', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            [header]: token
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        mostrarToast(data.message, data.success ? 'success' : 'warning');
-        if (data.success) {
-            document.getElementById('newsletterForm').reset();
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        mostrarToast('Error al suscribirse', 'danger');
-    });
-});
-
-// Mostrar mensaje toast
 function mostrarToast(mensaje, tipo = 'success') {
     const toast = document.getElementById('newsletterToast');
     const mensajeEl = document.getElementById('newsletterToastMessage');
 
-    toast.classList.remove('bg-success', 'bg-danger', 'bg-warning');
-    toast.classList.add(`bg-${tipo}`);
-    mensajeEl.textContent = mensaje;
+    if (toast && mensajeEl) {
+        toast.classList.remove('bg-success', 'bg-danger', 'bg-warning');
+        toast.classList.add(`bg-${tipo}`);
+        mensajeEl.textContent = mensaje;
 
-    toast.style.display = 'block';
+        toast.style.display = 'block';
 
-    setTimeout(() => {
-        toast.style.display = 'none';
-    }, 4000);
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 4000);
+    }
 }
 
 function ocultarToast() {
-    document.getElementById('newsletterToast').style.display = 'none';
+    const toast = document.getElementById('newsletterToast');
+    if (toast) {
+        toast.style.display = 'none';
+    }
 }

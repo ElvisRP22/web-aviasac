@@ -18,40 +18,39 @@ public class Solicitud {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull(message = "El usuario es obligatorio")
+    // Usuario se establecerá en el controller, no validar aquí
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    @NotNull(message = "El servicio es obligatorio")
+    // Servicio se establecerá en el controller, no validar aquí
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_servicio", nullable = false)
     private Servicio servicio;
 
-    @NotNull(message = "El tipo de cultivo es obligatorio")
+    // Tipo de cultivo se establecerá en el controller, no validar aquí
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_de_cultivo", nullable = false)
     private TipoDeCultivo tipoDeCultivo;
 
     @NotBlank(message = "La ubicación es obligatoria")
-    @Size(max = 255)
+    @Size(max = 255, message = "La ubicación no debe superar 255 caracteres")
     @Column(name = "ubicacion", length = 255, nullable = false)
     private String ubicacion;
 
     @NotNull(message = "El número de hectáreas es obligatorio")
-    @PositiveOrZero
+    @Min(value = 1, message = "Debe ser al menos 1 hectárea")
     @Column(name = "num_hectareas", nullable = false)
     private Integer numHectareas;
 
-    @Size(max = 100)
+    @Size(max = 100, message = "El área para aterrizar no debe superar 100 caracteres")
     @Column(name = "area_para_aterrizar", length = 100)
     private String areaParaAterrizar;
 
-    @Size(max = 255)
+    @Size(max = 255, message = "El mensaje no debe superar 255 caracteres")
     @Column(name = "mensaje", length = 255)
     private String mensaje;
 
-    @NotNull
     @Column(name = "fecha_solicitud", nullable = false)
     private LocalDateTime fechaSolicitud;
 
@@ -59,13 +58,15 @@ public class Solicitud {
     @Column(name = "estado", length = 20, nullable = false)
     private SolicitudEstado estado;
 
-    @FutureOrPresent(message = "La fecha preferida debe ser hoy o en el futuro")
+    // Quitar @FutureOrPresent temporalmente para debugging
     @Column(name = "fecha_preferida")
     private LocalDate fechaPreferida;
 
     @PrePersist
     private void prePersist() {
-        this.fechaSolicitud = LocalDateTime.now();
+        if (this.fechaSolicitud == null) {
+            this.fechaSolicitud = LocalDateTime.now();
+        }
         if (this.estado == null) {
             this.estado = SolicitudEstado.PENDIENTE;
         }
