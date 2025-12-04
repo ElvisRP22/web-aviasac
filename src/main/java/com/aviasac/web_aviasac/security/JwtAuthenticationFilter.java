@@ -34,11 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = null;
         String authHeader = request.getHeader("Authorization");
 
-        // 1. Buscar en el Header (Prioridad para API/Fetch)
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-        } 
-        // 2. Si no hay header, Buscar en Cookies (Para navegación Thymeleaf)
+        }
         else {
             if (request.getCookies() != null) {
                 for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
@@ -50,7 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        // Si encontramos un token, validamos
         if (token != null) {
             try {
                 username = jwtService.extractUsername(token);
@@ -66,7 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (Exception e) {
-                // Si el token es inválido o expiró, simplemente no autenticamos (el usuario será redirigido al login o 403)
                 logger.error("Error validando token en filtro: " + e.getMessage());
             }
         }

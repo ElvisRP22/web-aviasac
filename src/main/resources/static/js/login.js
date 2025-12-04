@@ -34,13 +34,9 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
             return response.json();
         })
         .then(authResponse => {
-            // 1. Guardar Token
             localStorage.setItem('jwtToken', authResponse.token);
-
-            // 2. (Opcional) Guardar en Cookie para compatibilidad básica
             document.cookie = `jwtToken=${authResponse.token}; path=/; max-age=86400`;
 
-            // 3. Éxito
             Swal.fire({
                 icon: 'success',
                 title: '¡Bienvenido!',
@@ -48,7 +44,6 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
                 timer: 1500,
                 showConfirmButton: false
             }).then(() => {
-                // Redirigir al home o dashboard
                 window.location.href = '/';
             });
         })

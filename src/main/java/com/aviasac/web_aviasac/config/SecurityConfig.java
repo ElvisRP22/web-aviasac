@@ -33,14 +33,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Deshabilitamos CSRF para trabajar con API/JWT
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/img/**", "/uploads/**", "/css/**", "/js/**").permitAll() // Agregué css/js por si acaso
+                .requestMatchers("/img/**", "/uploads/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers(
                         "/auth/registro",
-                        "/auth/login", // Tu página de login HTML
-                        "/auth/token", // IMPORTANTE: El endpoint para loguearse y recibir el token
+                        "/auth/login",
+                        "/auth/token",
                         "/",
                         "/servicios/**",
                         "/beneficios/**",
@@ -51,16 +51,14 @@ public class SecurityConfig {
                         "/newsletter/suscribirse",
                         "/error"
                 ).permitAll()
-                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // O hasRole("ADMIN") dependiendo de cómo guardes el rol
+                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/solicitudes/guardar").authenticated()
                 .anyRequest().authenticated()
             )
-            // CAMBIO IMPORTANTE: Sesión STATELESS (JWT no usa cookies de sesión)
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider())
-            // Agregamos el filtro JWT antes del filtro de usuario/password
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
