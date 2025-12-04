@@ -11,7 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder; // Importante
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,6 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final UsuarioService usuarioService;
-    private final PasswordEncoder passwordEncoder;
 
     public AuthController(AuthenticationManager authenticationManager, 
                           JwtService jwtService, 
@@ -35,7 +34,6 @@ public class AuthController {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
         this.usuarioService = usuarioService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/login")
